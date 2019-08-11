@@ -77,7 +77,6 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 6.0)
   - Flutter (1.0.0)
   - flutter_facebook_login (0.0.1):
-    - FBSDKCoreKit (= 4.39.1)
     - FBSDKLoginKit (= 4.39.1)
     - Flutter
   - google_sign_in (0.0.1):
@@ -206,7 +205,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: f9d8dbe06cb1e50b5025d0d9ece41e173d0c7e00
   FirebaseInstanceID: 9782fcfb89e4d7da76cc28eac4b8543dc7be4a4b
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_facebook_login: be61e24a4b7d621515353c6b4583d1981bdaa3d6
+  flutter_facebook_login: f1f88c32d5888d6b5f3301fd87cc7de26f02877e
   google_sign_in: 27e70a98b529f0b076d4b19f231b81da28b1750b
   GoogleAppMeasurement: 1e45fa601e6280c180880d57010390f6679cd971
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39

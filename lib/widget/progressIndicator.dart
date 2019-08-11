@@ -15,7 +15,7 @@ class AnimatedProgressIndicator extends StatelessWidget {
       child: Visibility(
         visible: _isLoading,
         child: LinearProgressIndicator(
-          backgroundColor: Colors.pink[100],
+          backgroundColor: Colors.deepOrangeAccent[100],
         ),
       ),
     );
