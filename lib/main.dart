@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         accentColor: Colors.deepOrangeAccent,
         bottomAppBarColor: Colors.green,
-        iconTheme: IconThemeData(color: Colors.white,)
+        iconTheme: IconThemeData(color: Colors.white,),
       ),
       home: StreamBuilder<FirebaseUser>(
         stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -77,12 +77,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Scaffold(
       appBar: AppBar(
         title: Text(tabBarText()),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.cancel),
-            onPressed: () => FirebaseAuth.instance.signOut(),
-          )
-        ],
       ),
       body: TabBarView(
         physics: NeverScrollableScrollPhysics(),
