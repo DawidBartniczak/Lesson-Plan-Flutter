@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import './widget/menuFAB.dart';
-import './screen/register.dart';
-import './screen/login.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
-import './screen/settings/userManager.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,19 +24,9 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.deepPurpleAccent,
         iconTheme: IconThemeData(color: Colors.white,),
       ),
-      home: StreamBuilder<FirebaseUser>(
-        stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (_, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.hasData)
-            return HomeScreen();
-          else
-            return Register();
-        },
-      ),
+      home: HomeScreen(),
       routes: {
-        'login': (_) => Login(),
         'settings': (_) => Settings(),
-        'settingsUserManager': (_) => UserManager()
       },
     );
   }

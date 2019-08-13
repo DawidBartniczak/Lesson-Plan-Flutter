@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -8,9 +8,25 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool _sevenDayPlan = false;
+  SharedPreferences _sharedPreferences;
+
+  @override
+  void initState() {
+    SharedPreferences.getInstance()
+      .then((SharedPreferences sharedPreferences) {
+        _sharedPreferences = sharedPreferences;
+        if (_sharedPreferences.getBool('sevenDayPlan') == null) {
+          _sharedPreferences.setBool('sevenDayPlan', false);
+        }
+        setState(() => _sevenDayPlan = _sharedPreferences.getBool('sevenDayPlan'));
+      });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Ustawienia'),
@@ -19,29 +35,8 @@ class _SettingsState extends State<Settings> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Text('Konto', style: Theme.of(context).textTheme.subtitle),
-          ),
-          InkWell(
-            onTap: () => Navigator.of(context).pushNamed('settingsUserManager'),
-            child: ListTile(
-              title: Text('Opcje Konta'),
-              subtitle: Text('Zarządzaj swoim kontem.'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ),
-          ),
-          InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: Text('Opcje Klasy'),
-              subtitle: Text('Zarządzaj i dołączaj do klas.'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child:
-                Text('Aplikacja', style: Theme.of(context).textTheme.subtitle),
+                Text('Aplikacja', style: _theme.textTheme.subtitle),
           ),
           ListTile(
             title: Text('Siedmo dniowy plan'),
@@ -56,18 +51,13 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child:
-                Text('Zerowanie', style: Theme.of(context).textTheme.subtitle),
+                Text('Zerowanie', style: _theme.textTheme.subtitle),
           ),
           InkWell(
-            onTap: () {
-              FirebaseAuth.instance.signOut()
-                .then((_) {
-                  Navigator.of(context).pop();
-                });
-            },
+            onTap: () {},
             child: ListTile(
-              title: Text('Wyloguj', style: TextStyle(color: Colors.red),),
-              subtitle: Text('Usuń konto z tego urządzenia.'),
+              title: Text('Reset', style: TextStyle(color: Colors.red),),
+              subtitle: Text('Usuń dane z tego urządzenia.'),
             ),
           ),
           Divider()
