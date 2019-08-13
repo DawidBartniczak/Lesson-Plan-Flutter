@@ -6,6 +6,7 @@ import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
+import './screen/lessonPlanEditor.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       home: HomeScreen(),
       routes: {
         'settings': (_) => Settings(),
+        'lessonPlanEditor': (_) => LessonPlanEditor()
       },
     );
   }
@@ -76,14 +78,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       floatingActionButton: FloatingActionButtonMenu((int itemID) {
         if (itemID == 1)
-          Navigator.of(context).pushNamed('settings');
+          Navigator.of(context).pushNamed('lessonPlanEditor');
         else if (itemID == 2) 
           Navigator.of(context).pushNamed('settings');
       }, [
         FloatingActionButtonMenuItem(
           id: 1,
-          tooltipText: 'Dodaj',
-          itemIcon: Icons.add
+          tooltipText: 'Edytuj Plan',
+          itemIcon: Icons.edit
         ),
         FloatingActionButtonMenuItem(
           id: 2,
@@ -94,9 +96,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
-        // backgroundColor: Theme.of(context).primaryColor,
-        // selectedItemColor: Colors.white,
-        // unselectedItemColor: Colors.green[200],
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
