@@ -140,3 +140,33 @@ Future<void> authenticateWithFacebook(BuildContext context) async {
   } else if (result.status == FacebookLoginStatus.error)
     showErrorDialog(context, "Nieznany problem!");
 }
+
+Future<void> updatePassword(BuildContext context, FirebaseUser user, String oldPassword, String newPassword, String newPasswordConfirm) async {
+  try {
+    if (newPassword != newPasswordConfirm)
+      throw AuthException('ERROR_PASSWORDS_DONT_MATCH', '');
+
+    AuthCredential credential = EmailAuthProvider.getCredential(
+      email: user.email,
+      password: oldPassword
+    );
+    await user.reauthenticateWithCredential(credential);
+
+    await user.updatePassword(newPassword);
+  } catch(error) {
+    String errorMessage;
+
+    print(error);
+
+    if (error.code == 'ERROR_PASSWORDS_DONT_MATCH')
+      errorMessage = 'Hasła się nie zgadzają!';
+    else if (error.code == 'ERROR_WRONG_PASSWORD')
+      errorMessage = 'Błędne hasło!';
+    else if (error.code == 'ERROR_NETWORK_REQUEST_FAILED')
+      errorMessage = 'Nie można było połączyć z serwerem!';
+    else 
+      errorMessage = "Nieznany problem!";
+
+    showErrorDialog(context, errorMessage);
+  }
+}

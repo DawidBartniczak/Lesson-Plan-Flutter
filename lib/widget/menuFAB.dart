@@ -40,7 +40,7 @@ class _FloatingActionButtonMenuState extends State<FloatingActionButtonMenu> wit
     )..addListener(() => setState(() {}));
     _iconAnimation = Tween<double>(begin: 0.0, end: 1.0)
       .animate(_animationController);
-    _colorAnimation = ColorTween(begin: Colors.deepOrangeAccent, end: Colors.red)
+    _colorAnimation = ColorTween(begin: Colors.deepPurpleAccent, end: Colors.red)
       .animate(_animationController);
     _itemScaleAnimation = Tween<double>(begin: 0.2, end: 1.0)
       .animate(CurvedAnimation(

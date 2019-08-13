@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _SettingsState extends State<Settings> {
             child: Text('Konto', style: Theme.of(context).textTheme.subtitle),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushNamed('settingsUserManager'),
             child: ListTile(
               title: Text('Opcje Konta'),
               subtitle: Text('Zarządzaj swoim kontem.'),

@@ -9,6 +9,7 @@ import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
+import './screen/settings/userManager.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,9 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        accentColor: Colors.deepOrangeAccent,
-        bottomAppBarColor: Colors.green,
+        primarySwatch: Colors.deepPurple,
+        accentColor: Colors.deepPurpleAccent,
         iconTheme: IconThemeData(color: Colors.white,),
       ),
       home: StreamBuilder<FirebaseUser>(
@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         'login': (_) => Login(),
-        'settings': (_) => Settings()
+        'settings': (_) => Settings(),
+        'settingsUserManager': (_) => UserManager()
       },
     );
   }
@@ -88,42 +89,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
       ),
       floatingActionButton: FloatingActionButtonMenu((int itemID) {
-        _tabController.animateTo(itemID - 1);
-        setState(() {});
+        if (itemID == 1)
+          Navigator.of(context).pushNamed('settings');
+        else if (itemID == 2) 
+          Navigator.of(context).pushNamed('settings');
       }, [
         FloatingActionButtonMenuItem(
           id: 1,
-          tooltipText: 'Plan Lekcji',
-          itemIcon: Icons.calendar_today
+          tooltipText: 'Dodaj',
+          itemIcon: Icons.add
         ),
         FloatingActionButtonMenuItem(
           id: 2,
-          tooltipText: 'Zadania Domowe',
-          itemIcon: Icons.home
-        ),
-        FloatingActionButtonMenuItem(
-          id: 3,
-          tooltipText: 'Sprawdziany',
-          itemIcon: Icons.library_books
+          tooltipText: 'Ustawienia',
+          itemIcon: Icons.settings
         )
       ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              tooltip: 'Add',
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              tooltip: 'Ustawienia',
-              onPressed: () => Navigator.of(context).pushNamed('settings'),
-            )
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        // backgroundColor: Theme.of(context).primaryColor,
+        // selectedItemColor: Colors.white,
+        // unselectedItemColor: Colors.green[200],
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            title: Text('Plan Lekcji'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Zadania Domowe'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            title: Text('Sprawdziany'),
+          )
+        ],
+        onTap: (int index) => setState(() => _tabController.animateTo(index)),
       ),
     );
   }

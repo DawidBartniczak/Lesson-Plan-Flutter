@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
 
-import '../model/userRegister.dart';
+import '../model/userAuth.dart';
 import '../widget/progressIndicator.dart';
 
 class Register extends StatelessWidget {
@@ -68,7 +68,10 @@ class _LoginFormState extends State<LoginForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        AnimatedProgressIndicator(_isLoading, !_isTablet ? MediaQuery.of(context).size.width - 24 : 425),
+        PreferredSize(
+          preferredSize: Size.fromHeight(16.0),
+          child: AnimatedProgressIndicator(_isLoading),
+        ),
         Padding(
           padding: EdgeInsets.all(!_isTablet ? 16 : 24),
           child: Form(
