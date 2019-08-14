@@ -9,12 +9,11 @@ class LessonPlanScreen extends StatefulWidget {
 }
 
 class _LessonPlanScreenState extends State<LessonPlanScreen> {
-  DatabaseHelper _databaseHelper;
+  DatabaseHelper _databaseHelper = DatabaseHelper();
   Future<List<Lesson>> _lessons;
 
   @override
   void initState() {
-    _databaseHelper = DatabaseHelper();
     loadData();
     super.initState();
   }

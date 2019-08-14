@@ -25,6 +25,12 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.deepPurpleAccent,
         iconTheme: IconThemeData(color: Colors.white,),
       ),
+      builder: (BuildContext context, Widget home) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: home,
+        );
+      },
       home: HomeScreen(),
       routes: {
         'settings': (_) => Settings(),

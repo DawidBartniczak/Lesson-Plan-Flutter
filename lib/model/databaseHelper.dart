@@ -20,20 +20,22 @@ class DatabaseHelper {
 
   Future _initDatabase() async {
     String databasePath = join(await getDatabasesPath(), DATABASE_NAME);
+    print(databasePath);
     _database = await openDatabase(databasePath, version: 1,
       onCreate: _createTables
     );
+    await _database.execute('PRAGMA foreign_keys = ON;');
   }
 
   void _createTables(Database database, _) async {
     await database.execute(
-      'CREATE TABLE ${Lesson.TABLE_NAME} (${Lesson.ID} INTEGER PRIMARY KEY, ${Lesson.NAME} TEXT, ${Lesson.CLASSROOM} TEXT, ${Lesson.START_SECONDS} INTEGER, ${Lesson.END_SECONDS} INTEGER, ${Lesson.DAY} INTEGER)',
+      'CREATE TABLE ${Lesson.TABLE_NAME} (${Lesson.ID} INTEGER PRIMARY KEY, ${Lesson.SUBJECT} TEXT, ${Lesson.CLASSROOM} TEXT, ${Lesson.START_HOUR} INTEGER, ${Lesson.START_MINUTE} INTEGER, ${Lesson.END_HOUR} INTEGER, ${Lesson.END_MINUTE} INTEGER, ${Lesson.DAY} INTEGER)',
     );
     await database.execute(
-      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER, ${Homework.NAME} TEXT, ${Homework.DATE} TEXT)',
+      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Homework.NAME} TEXT, ${Homework.DATE} TEXT)',
     );
     await database.execute(
-      'CREATE TABLE ${Test.TABLE_NAME} (${Test.ID} INTEGER PRIMARY KEY, ${Test.LESSON_ID} INTEGER, ${Test.NAME} TEXT, ${Test.DATE} TEXT)',
+      'CREATE TABLE ${Test.TABLE_NAME} (${Test.ID} INTEGER PRIMARY KEY, ${Test.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Test.NAME} TEXT, ${Test.DATE} TEXT)',
     );
   }
 
@@ -54,7 +56,7 @@ class DatabaseHelper {
 
   Future<List<Lesson>> get lessons async {
     List<Map<String, dynamic>> lessonsData = await (await database).query(Lesson.TABLE_NAME,
-    columns: [Lesson.ID, Lesson.NAME, Lesson.CLASSROOM, Lesson.START_SECONDS, Lesson.END_SECONDS, Lesson.DAY]);
+    columns: [Lesson.ID, Lesson.SUBJECT, Lesson.CLASSROOM, Lesson.START_HOUR, Lesson.START_MINUTE, Lesson.END_HOUR, Lesson.END_MINUTE, Lesson.DAY]);
     return lessonsData.map((Map lessonData) => Lesson.fromMap(lessonData)).toList();
   }
 
@@ -66,5 +68,13 @@ class DatabaseHelper {
   Future<List<Test>> get tests async {
     List<Map<String, dynamic>> testsData = await (await database).query(Test.TABLE_NAME);
     return testsData.map((Map testData) => Test.fromMap(testData)).toList();
+  }
+
+  Future deleteLesson(int lessonId) async {
+    await (await database).delete(
+      Lesson.TABLE_NAME,
+      where: 'id = ?',
+      whereArgs: [lessonId]
+    );
   }
 }
