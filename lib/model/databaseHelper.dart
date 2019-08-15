@@ -70,6 +70,12 @@ class DatabaseHelper {
     return testsData.map((Map testData) => Test.fromMap(testData)).toList();
   }
 
+  Future<List<Lesson>> getLessonsForDay(int day) async {
+    List<Map<String, dynamic>> lessonsData =
+      await (await database).query(Lesson.TABLE_NAME, where: 'day = ?', whereArgs: [day]);
+    return lessonsData.map((Map lessonData) => Lesson.fromMap(lessonData)).toList();
+  }
+
   Future deleteLesson(int lessonId) async {
     await (await database).delete(
       Lesson.TABLE_NAME,

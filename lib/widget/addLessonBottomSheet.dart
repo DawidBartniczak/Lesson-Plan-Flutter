@@ -24,7 +24,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
   void pickStartDate() {
     showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now()
+      initialTime: _startTime == null ? TimeOfDay.now() : _startTime
     ).then((TimeOfDay startTime) {
       if (startTime != null) {
         DateTime now = DateTime.now();
