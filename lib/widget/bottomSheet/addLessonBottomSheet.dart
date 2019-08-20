@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/lesson.dart';
+import '../../model/lesson.dart';
 
 class AddLessonBottomSheet extends StatefulWidget {
   final Function(Lesson) _addToDatabase;
@@ -13,7 +13,7 @@ class AddLessonBottomSheet extends StatefulWidget {
 }
 
 class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _lessonFormKey = GlobalKey<FormState>();
   final FocusNode _classroomFocusNode = FocusNode();
   String _subject;
   String _classroom;
@@ -53,7 +53,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
     return Padding(
       padding: EdgeInsets.all(!_isTablet ? 16 : 24),
       child: Form(
-        key: _formKey,
+        key: _lessonFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -99,8 +99,8 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
               textColor: Colors.white,
               child: Text('Zapisz'),
               onPressed: () {
-                if (_formKey.currentState.validate() && _startTime != null && _endTime != null) {
-                  _formKey.currentState.save();
+                if (_lessonFormKey.currentState.validate() && _startTime != null && _endTime != null) {
+                  _lessonFormKey.currentState.save();
                   widget._addToDatabase(Lesson(
                     id: null,
                     subject: _subject,

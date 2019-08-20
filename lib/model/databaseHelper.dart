@@ -32,7 +32,7 @@ class DatabaseHelper {
       'CREATE TABLE ${Lesson.TABLE_NAME} (${Lesson.ID} INTEGER PRIMARY KEY, ${Lesson.SUBJECT} TEXT, ${Lesson.CLASSROOM} TEXT, ${Lesson.START_HOUR} INTEGER, ${Lesson.START_MINUTE} INTEGER, ${Lesson.END_HOUR} INTEGER, ${Lesson.END_MINUTE} INTEGER, ${Lesson.DAY} INTEGER)',
     );
     await database.execute(
-      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Homework.NAME} TEXT, ${Homework.DATE} TEXT)',
+      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Homework.NAME} TEXT, ${Homework.IS_DONE} INTEGER, ${Homework.DATE} TEXT)',
     );
     await database.execute(
       'CREATE TABLE ${Test.TABLE_NAME} (${Test.ID} INTEGER PRIMARY KEY, ${Test.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Test.NAME} TEXT, ${Test.DATE} TEXT)',
@@ -57,23 +57,37 @@ class DatabaseHelper {
   Future<List<Lesson>> get lessons async {
     List<Map<String, dynamic>> lessonsData = await (await database).query(Lesson.TABLE_NAME,
     columns: [Lesson.ID, Lesson.SUBJECT, Lesson.CLASSROOM, Lesson.START_HOUR, Lesson.START_MINUTE, Lesson.END_HOUR, Lesson.END_MINUTE, Lesson.DAY]);
-    return lessonsData.map((Map lessonData) => Lesson.fromMap(lessonData)).toList();
+    return lessonsData.map((Map rawLesson) => Lesson.fromMap(rawLesson)).toList();
   }
 
   Future<List<Homework>> get homework async {
     List<Map<String, dynamic>> homeworkData = await (await database).query(Homework.TABLE_NAME);
-    return homeworkData.map((Map homeworkMap) => Homework.fromMap(homeworkMap)).toList();
+    return homeworkData.map((Map rawHomework) => Homework.fromMap(rawHomework)).toList();
   }
 
   Future<List<Test>> get tests async {
     List<Map<String, dynamic>> testsData = await (await database).query(Test.TABLE_NAME);
-    return testsData.map((Map testData) => Test.fromMap(testData)).toList();
+    return testsData.map((Map rawTest) => Test.fromMap(rawTest)).toList();
   }
 
   Future<List<Lesson>> getLessonsForDay(int day) async {
     List<Map<String, dynamic>> lessonsData =
-      await (await database).query(Lesson.TABLE_NAME, where: 'day = ?', whereArgs: [day]);
-    return lessonsData.map((Map lessonData) => Lesson.fromMap(lessonData)).toList();
+      await (await database).query(Lesson.TABLE_NAME, where: '${Lesson.DAY} = ?', whereArgs: [day]);
+    return lessonsData.map((Map rawLesson) => Lesson.fromMap(rawLesson)).toList();
+  }
+
+  Future<Homework> getHomeworkForLesson(int lessonID) async {
+    List<Map<String, dynamic>> homeworkData =
+      await (await database).query(Homework.TABLE_NAME, where: '${Homework.LESSON_ID} = ?', whereArgs: [lessonID]);
+    return homeworkData.map((Map rawHomework) => Homework.fromMap(rawHomework)).toList()
+      .first;
+  }
+  
+  Future<Test> getTestForLesson(int lessonID) async {
+    List<Map<String, dynamic>> testData =
+      await (await database).query(Test.TABLE_NAME, where: '${Test.LESSON_ID} = ?', whereArgs: [lessonID]);
+    return testData.map((Map rawTest) => Test.fromMap(rawTest)).toList()
+      .first;
   }
 
   Future deleteLesson(int lessonId) async {

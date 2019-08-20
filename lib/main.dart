@@ -7,6 +7,7 @@ import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
 import './screen/lessonPlanEditor.dart';
+import './screen/lessonDetails.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
       home: HomeScreen(),
       routes: {
         'settings': (_) => Settings(),
-        'lessonPlanEditor': (_) => LessonPlanEditor()
+        'lessonPlanEditor': (_) => LessonPlanEditor(),
+        LessonDetails.ROUTE_NAME: (_) => LessonDetails()
       },
     );
   }

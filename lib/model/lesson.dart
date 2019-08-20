@@ -22,26 +22,26 @@ class Lesson {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'subject': subject,
-      'classroom': classroom,
-      'start_hour': startHour,
-      'start_minute': startMinute,
-      'end_hour': endHour,
-      'end_minute': endMinute,
-      'day': day
+      ID: id,
+      SUBJECT: subject,
+      CLASSROOM: classroom,
+      START_HOUR: startHour,
+      START_MINUTE: startMinute,
+      END_HOUR: endHour,
+      END_MINUTE: endMinute,
+      DAY: day
     };
   }
 
   Lesson.fromMap(Map<String, dynamic> lessonData) {
-    id = lessonData['id'];
-    subject = lessonData['subject'];
-    classroom = lessonData['classroom'];
-    startHour = lessonData['start_hour'];
-    startMinute = lessonData['start_minute'];
-    endHour = lessonData['end_hour'];
-    endMinute = lessonData['end_minute'];
-    day = lessonData['day'];
+    id = lessonData[ID];
+    subject = lessonData[SUBJECT];
+    classroom = lessonData[CLASSROOM];
+    startHour = lessonData[START_HOUR];
+    startMinute = lessonData[START_MINUTE];
+    endHour = lessonData[END_HOUR];
+    endMinute = lessonData[END_MINUTE];
+    day = lessonData[DAY];
   }
 
   Lesson({

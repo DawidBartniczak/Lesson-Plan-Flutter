@@ -3,7 +3,7 @@ import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
 import '../model/lesson.dart';
-import '../widget/addLessonBottomSheet.dart';
+import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
 class LessonPlanEditor extends StatefulWidget {
   @override
@@ -21,12 +21,13 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   }
 
   void loadData() {
+    print('load');
     setState(() {
       _lessons = _databaseHelper.lessons;
     });
   }
 
-  void insertLessonIntoDatabase(Lesson lesson) {
+  void _insertLessonIntoDatabase(Lesson lesson) {
     _databaseHelper.insertLesson(lesson)
       .then((_) => loadData());
   }
@@ -37,7 +38,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       dismissOnTap: false,
       builder: (_) {
         return AddLessonBottomSheet(
-          insertLessonIntoDatabase,
+          _insertLessonIntoDatabase,
           day
         );
       }
@@ -50,6 +51,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           title: Text('Czy na pewno?'),
           content: Text('Czy na pewno chcesz usunąć tą lekcję?'),
           actions: <Widget>[
@@ -115,7 +117,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     return ListView(
       children: <Widget>[
         ExpansionTile(
-          onExpansionChanged: (_) => loadData(),
           title: Text('Poniedziałek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ...lessonsForDay(1, lessons),
@@ -123,7 +124,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           ],
         ),
         ExpansionTile(
-          onExpansionChanged: (_) => loadData(),
           title: Text('Wtorek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ...lessonsForDay(2, lessons),
@@ -131,7 +131,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           ],
         ),
         ExpansionTile(
-          onExpansionChanged: (_) => loadData(),
           title: Text('Środa', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ...lessonsForDay(3, lessons),
@@ -139,7 +138,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           ],
         ),
         ExpansionTile(
-          onExpansionChanged: (_) => loadData(),
           title: Text('Czwartek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ...lessonsForDay(4, lessons),
@@ -147,7 +145,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           ],
         ),
         ExpansionTile(
-          onExpansionChanged: (_) => loadData(),
           title: Text('Piątek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ...lessonsForDay(5, lessons),

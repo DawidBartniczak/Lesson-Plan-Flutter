@@ -14,18 +14,18 @@ class Test {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'lessonID': lessonID,
-      'name': name,
-      'date': date
+      ID: id,
+      LESSON_ID: lessonID,
+      NAME: name,
+      DATE: date
     };
   }
 
   Test.fromMap(Map<String, dynamic> lessonData) {
-    id = lessonData['id'];
-    lessonID = lessonData['lessonID'];
-    name = lessonData['name'];
-    date = lessonData['date'];
+    id = lessonData[ID];
+    lessonID = lessonData[LESSON_ID];
+    name = lessonData[NAME];
+    date = lessonData[DATE];
   }
 
   Test({

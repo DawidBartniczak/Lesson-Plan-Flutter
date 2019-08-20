@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lessonplan/screen/lessonDetails.dart';
 
 import '../model/databaseHelper.dart';
 import '../model/lesson.dart';
@@ -25,7 +26,30 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
     });
   }
 
-  Widget buildTabletLessonGrid(List<Lesson> lessons) {
+  String get _dayText {
+    switch (day) {
+      case 1:
+        return 'Poniedziałek';
+        break;
+      case 2:
+        return 'Wtorek';
+        break;
+      case 3:
+        return 'Środa';
+        break;
+      case 4:
+        return 'Czwartek';
+        break;
+      case 5:
+        return 'Piątek';
+        break;
+      default:
+        return '';
+        break;
+    }
+  }
+
+  Widget _buildTabletLessonGrid(List<Lesson> lessons) {
     return GridView(
       padding: EdgeInsets.all(24.0),
       children: lessons.map((Lesson lesson) {
@@ -34,7 +58,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
             borderRadius: BorderRadius.circular(5.0)
           ),
           child: InkWell(
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushNamed(LessonDetails.ROUTE_NAME, arguments: lesson),
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -73,11 +97,11 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
     );
   }
 
-  Widget buildPhoneLessonList(List<Lesson> lessons) {
+  Widget _buildPhoneLessonList(List<Lesson> lessons) {
     return ListView(
       children: lessons.map((Lesson lesson) {
         return InkWell(
-          onTap: () {},
+          onTap: () => Navigator.of(context).pushNamed(LessonDetails.ROUTE_NAME, arguments: lesson),
           child: ListTile(
             title: Text(lesson.subject),
             subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
@@ -110,21 +134,29 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
                     IconButton(
                       icon: Icon(Icons.keyboard_arrow_left),
                       color: Colors.black,
-                      onPressed: () {},
+                      onPressed: () {
+                        if (day != 1)
+                          day--;
+                          loadData();
+                      },
                     ),
-                    Text('Poniedziałek'),
+                    Text(_dayText),
                     IconButton(
                       icon: Icon(Icons.keyboard_arrow_right),
                       color: Colors.black,
-                      onPressed: () {},
+                      onPressed: () {
+                        if (day != 5)
+                          day++;
+                          loadData();
+                      },
                     ),
                   ],
                 ),
               ),
               Expanded(
                 child: !_isTablet 
-                  ? buildPhoneLessonList(lessons)
-                  : buildTabletLessonGrid(lessons),
+                  ? _buildPhoneLessonList(lessons)
+                  : _buildTabletLessonGrid(lessons),
               )
             ],
           );
