@@ -28,7 +28,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
             TextFormField(
               keyboardAppearance: Brightness.light,
               decoration: InputDecoration(
-                labelText: 'Treść zadania domowego',
+                labelText: 'Temat do sprawdzianu.',
                 filled: true
               ),
             ),
@@ -37,8 +37,8 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(!_datePicked 
-                  ? 'Godzina początku lekcji:' 
-                  : 'Wybrane godziny:'),
+                  ? 'Data sprawdzianu:' 
+                  : 'Wybrana data:'),
                 FlatButton(
                   child: Text('Wybierz'),
                   onPressed: () {},
