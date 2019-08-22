@@ -69,7 +69,7 @@ class _LessonDetailsState extends State<LessonDetails> {
             ),
           ),
           Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             child: FutureBuilder(
               future: _databaseHelper.getHomeworkForLesson(lesson.id),
               builder: (_, AsyncSnapshot<Homework> snapshot) {
@@ -78,7 +78,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
                   return ListTile(
                     title: Text(homework.name),
-                    subtitle: Text(homework.date.toString()),
+                    subtitle: Text(DateFormat('dd-MM-yyyy').format(homework.date)),
                     leading: Icon(Icons.home),
                     trailing: IconButton(
                       icon: Icon(Icons.check),

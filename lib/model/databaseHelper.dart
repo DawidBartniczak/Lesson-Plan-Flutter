@@ -24,7 +24,6 @@ class DatabaseHelper {
     _database = await openDatabase(databasePath, version: 1,
       onCreate: _createTables
     );
-    await _database.execute('PRAGMA foreign_keys = ON');
   }
 
   void _createTables(Database database, _) async {
@@ -76,11 +75,29 @@ class DatabaseHelper {
     return lessonsData.map((Map rawLesson) => Lesson.fromMap(rawLesson)).toList();
   }
 
+  Future<String> getLessonSubject(int lessonID) async {
+    List<Map<String, dynamic>> lessonsData =
+      await (await database).query(
+        Lesson.TABLE_NAME,
+        where: 'id = ?',
+        whereArgs: [lessonID]
+      );
+    if (lessonsData.first != null)
+      return lessonsData.first[Lesson.SUBJECT];
+    else
+      return null;
+  }
+
   Future<Homework> getHomeworkForLesson(int lessonID) async {
     List<Map<String, dynamic>> homeworkData =
       await (await database).query(Homework.TABLE_NAME, where: '${Homework.LESSON_ID} = ?', whereArgs: [lessonID]);
-    return homeworkData.map((Map rawHomework) => Homework.fromMap(rawHomework)).toList()
-      .first;
+    Homework homework = homeworkData.map((Map rawHomework) => Homework.fromMap(rawHomework)).toList().first;
+    if (homework.date.isAfter(DateTime.now()))
+      return homework;
+    else {
+      await deleteHomework(homework.id);
+      return null;
+    }
   }
   
   Future<Test> getTestForLesson(int lessonID) async {
@@ -90,11 +107,29 @@ class DatabaseHelper {
       .first;
   }
 
-  Future deleteLesson(int lessonId) async {
+  Future deleteLesson(int lessonID) async {
     await (await database).delete(
       Lesson.TABLE_NAME,
+      where: '${Lesson.ID} = ?',
+      whereArgs: [lessonID]
+    );
+    await (await database).delete(
+      Homework.TABLE_NAME,
+      where: '${Homework.LESSON_ID} = ?',
+      whereArgs: [lessonID]
+    );
+    await (await database).delete(
+      Test.TABLE_NAME,
+      where: '${Test.LESSON_ID} = ?',
+      whereArgs: [lessonID]
+    );
+  }
+
+  Future deleteHomework(int homeworkID) async {
+    await (await database).delete(
+      Homework.TABLE_NAME,
       where: 'id = ?',
-      whereArgs: [lessonId]
+      whereArgs: [homeworkID]
     );
   }
 
