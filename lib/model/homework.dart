@@ -12,7 +12,7 @@ class Homework {
   int lessonID;
   String name;
   bool isDone;
-  String date;
+  DateTime date;
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,7 +20,7 @@ class Homework {
       LESSON_ID: lessonID,
       NAME: name,
       IS_DONE: isDone ? 1 : 0,
-      DATE: date
+      DATE: date.toString()
     };
   }
 
@@ -28,8 +28,8 @@ class Homework {
     id = lessonData[ID];
     lessonID = lessonData[LESSON_ID];
     name = lessonData[NAME];
-    isDone = lessonData[IS_DONE] != 0 ? true : false;
-    date = lessonData[DATE];
+    isDone = lessonData[IS_DONE] == 0 ? false : true;
+    date = DateTime.parse(lessonData[DATE]);
   }
 
   Homework({

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -8,20 +7,6 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool _sevenDayPlan = false;
-  SharedPreferences _sharedPreferences;
-
-  @override
-  void initState() {
-    SharedPreferences.getInstance()
-      .then((SharedPreferences sharedPreferences) {
-        _sharedPreferences = sharedPreferences;
-        if (_sharedPreferences.getBool('sevenDayPlan') == null) {
-          _sharedPreferences.setBool('sevenDayPlan', false);
-        }
-        setState(() => _sevenDayPlan = _sharedPreferences.getBool('sevenDayPlan'));
-      });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

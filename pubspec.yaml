@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: ^1.1.6
-  shared_preferences: ^0.5.3+4
+  intl: ^0.15.8
   rounded_modal: ^1.0.1
 
 dev_dependencies:

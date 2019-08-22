@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/homework.dart';
+import '../../model/test.dart';
 
 class AddTestBottomSheet extends StatefulWidget {
   @override
@@ -37,8 +37,8 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(!_datePicked 
-                  ? 'Data sprawdzianu:' 
-                  : 'Wybrana data:'),
+                  ? 'Wybierz lekcję:' 
+                  : 'Wybrana lekcja:'),
                 FlatButton(
                   child: Text('Wybierz'),
                   onPressed: () {},

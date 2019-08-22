@@ -21,7 +21,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   }
 
   void loadData() {
-    print('load');
     setState(() {
       _lessons = _databaseHelper.lessons;
     });
@@ -32,7 +31,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       .then((_) => loadData());
   }
 
-  void showAddLesson(int day) {
+  void _showAddLesson(int day) {
     showRoundedModalBottomSheet(
       context: context,
       dismissOnTap: false,
@@ -45,7 +44,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     );
   }
 
-  Future<bool> showDeleteConfirm() {
+  Future<bool> _showDeleteConfirm() {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -70,9 +69,9 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     );
   }
 
-  Widget addLessonButton(int day) {
+  Widget _addLessonButton(int day) {
     return InkWell(
-      onTap: () => showAddLesson(day),
+      onTap: () => _showAddLesson(day),
       child: ListTile(
         leading: Icon(Icons.add),
         title: Text('Dodaj'),
@@ -80,7 +79,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     );
   }
 
-  Widget lessonTile(Lesson lesson) {
+  Widget _lessonTile(Lesson lesson) {
     return ListTile(
       title: Text(lesson.subject),
       subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
@@ -92,7 +91,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
         icon: Icon(Icons.delete),
         color: Colors.red,
         onPressed: () {
-          showDeleteConfirm()
+          _showDeleteConfirm()
             .then((bool isConfirmed) {
               if (isConfirmed) {
                 _databaseHelper.deleteLesson(lesson.id)
@@ -104,51 +103,51 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     );
   }
 
-  List<Widget> lessonsForDay(int day, List<Lesson> lessons) {
+  List<Widget> _lessonsForDay(int day, List<Lesson> lessons) {
     return lessons
       .where((Lesson lesson) => lesson.day == day)
       .map((Lesson lesson) {
-        return lessonTile(lesson);
+        return _lessonTile(lesson);
       })
       .toList();
   }
 
-  Widget buildLessonsList(List<Lesson> lessons) {
+  Widget _buildLessonsList(List<Lesson> lessons) {
     return ListView(
       children: <Widget>[
         ExpansionTile(
           title: Text('Poniedziałek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
-            ...lessonsForDay(1, lessons),
-            addLessonButton(1),
+            ..._lessonsForDay(1, lessons),
+            _addLessonButton(1),
           ],
         ),
         ExpansionTile(
           title: Text('Wtorek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
-            ...lessonsForDay(2, lessons),
-            addLessonButton(2),
+            ..._lessonsForDay(2, lessons),
+            _addLessonButton(2),
           ],
         ),
         ExpansionTile(
           title: Text('Środa', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
-            ...lessonsForDay(3, lessons),
-            addLessonButton(3),
+            ..._lessonsForDay(3, lessons),
+            _addLessonButton(3),
           ],
         ),
         ExpansionTile(
           title: Text('Czwartek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
-            ...lessonsForDay(4, lessons),
-            addLessonButton(4),
+            ..._lessonsForDay(4, lessons),
+            _addLessonButton(4),
           ],
         ),
         ExpansionTile(
           title: Text('Piątek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
-            ...lessonsForDay(5, lessons),
-            addLessonButton(5),
+            ..._lessonsForDay(5, lessons),
+            _addLessonButton(5),
           ],
         ),
       ],
@@ -165,7 +164,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
         future: _lessons,
         builder: (_, AsyncSnapshot<List<Lesson>> snapshot) {
           if (snapshot.hasData) {
-            return buildLessonsList(snapshot.data);
+            return _buildLessonsList(snapshot.data);
           } else {
             return Center(
               child: CircularProgressIndicator(),

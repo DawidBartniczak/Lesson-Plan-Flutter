@@ -24,18 +24,18 @@ class DatabaseHelper {
     _database = await openDatabase(databasePath, version: 1,
       onCreate: _createTables
     );
-    await _database.execute('PRAGMA foreign_keys = ON;');
+    await _database.execute('PRAGMA foreign_keys = ON');
   }
 
   void _createTables(Database database, _) async {
     await database.execute(
-      'CREATE TABLE ${Lesson.TABLE_NAME} (${Lesson.ID} INTEGER PRIMARY KEY, ${Lesson.SUBJECT} TEXT, ${Lesson.CLASSROOM} TEXT, ${Lesson.START_HOUR} INTEGER, ${Lesson.START_MINUTE} INTEGER, ${Lesson.END_HOUR} INTEGER, ${Lesson.END_MINUTE} INTEGER, ${Lesson.DAY} INTEGER)',
+      'CREATE TABLE ${Lesson.TABLE_NAME} (${Lesson.ID} INTEGER PRIMARY KEY, ${Lesson.SUBJECT} TEXT NOT NULL, ${Lesson.CLASSROOM} TEXT NOT NULL, ${Lesson.START_HOUR} INTEGER NOT NULL, ${Lesson.START_MINUTE} INTEGER NOT NULL, ${Lesson.END_HOUR} INTEGER NOT NULL, ${Lesson.END_MINUTE} INTEGER NOT NULL, ${Lesson.DAY} INTEGER NOT NULL)',
     );
     await database.execute(
-      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Homework.NAME} TEXT, ${Homework.IS_DONE} INTEGER, ${Homework.DATE} TEXT)',
+      'CREATE TABLE ${Homework.TABLE_NAME} (${Homework.ID} INTEGER PRIMARY KEY, ${Homework.LESSON_ID} INTEGER NOT NULL REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Homework.NAME} TEXT NOT NULL, ${Homework.IS_DONE} INTEGER DEFAULT 0, ${Homework.DATE} TEXT NOT NULL)',
     );
     await database.execute(
-      'CREATE TABLE ${Test.TABLE_NAME} (${Test.ID} INTEGER PRIMARY KEY, ${Test.LESSON_ID} INTEGER REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Test.NAME} TEXT, ${Test.DATE} TEXT)',
+      'CREATE TABLE ${Test.TABLE_NAME} (${Test.ID} INTEGER PRIMARY KEY, ${Test.LESSON_ID} INTEGER NOT NULL REFERENCES ${Lesson.TABLE_NAME}(${Lesson.ID}), ${Test.NAME} TEXT NOT NULL, ${Test.DATE} TEXT NOT NULL)',
     );
   }
 
@@ -95,6 +95,15 @@ class DatabaseHelper {
       Lesson.TABLE_NAME,
       where: 'id = ?',
       whereArgs: [lessonId]
+    );
+  }
+
+  Future changeHomeworkState(bool state, int homeworkID) async {
+    await (await database).update(
+      Homework.TABLE_NAME, 
+      {Homework.IS_DONE: state ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [homeworkID]
     );
   }
 }

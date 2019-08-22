@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
@@ -18,12 +19,16 @@ class LessonDetails extends StatefulWidget {
 class _LessonDetailsState extends State<LessonDetails> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
 
-  void showAddHomework() {
+  void showAddHomework(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
       context: context,
       dismissOnTap: false,
       builder: (_) {
-        return AddHomeworkBottomSheet();
+        return AddHomeworkBottomSheet(
+          _insertHomeworkIntoDatabase,
+          lessonDay,
+          lessonID
+        );
       }
     );
   }
@@ -36,6 +41,11 @@ class _LessonDetailsState extends State<LessonDetails> {
         return AddTestBottomSheet();
       }
     );
+  }
+
+  void _insertHomeworkIntoDatabase(Homework homework) {
+    _databaseHelper.insertHomework(homework)
+      .then((_) => setState(() {}));
   }
 
   @override
@@ -68,18 +78,22 @@ class _LessonDetailsState extends State<LessonDetails> {
 
                   return ListTile(
                     title: Text(homework.name),
-                    subtitle: Text(homework.date),
+                    subtitle: Text(homework.date.toString()),
                     leading: Icon(Icons.home),
                     trailing: IconButton(
                       icon: Icon(Icons.check),
-                      color: Colors.green,
-                      onPressed: () {},
+                      tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
+                      color: !homework.isDone ? Colors.grey : Colors.green,
+                      onPressed: () {
+                        _databaseHelper.changeHomeworkState(!homework.isDone, homework.id)
+                          .then((_) => setState(() {}));
+                      },
                     ),
                   );
                 } else {
                   return InkWell(
                     borderRadius: BorderRadius.circular(4.0),
-                    onTap: showAddHomework,
+                    onTap: () => showAddHomework(lesson.id, lesson.day),
                     child: ListTile(
                       title: Text('Dodaj zadanie domowe'),
                       leading: Icon(Icons.home),
