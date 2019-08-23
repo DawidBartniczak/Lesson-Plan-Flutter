@@ -61,7 +61,10 @@ class DatabaseHelper {
 
   Future<List<Homework>> get homework async {
     List<Map<String, dynamic>> homeworkData = await (await database).query(Homework.TABLE_NAME);
-    return homeworkData.map((Map rawHomework) => Homework.fromMap(rawHomework)).toList();
+    return homeworkData
+      .map((Map rawHomework) => Homework.fromMap(rawHomework))
+      .where((Homework homework) => homework.date.isAfter(DateTime.now()))
+      .toList();
   }
 
   Future<List<Test>> get tests async {
@@ -72,7 +75,14 @@ class DatabaseHelper {
   Future<List<Lesson>> getLessonsForDay(int day) async {
     List<Map<String, dynamic>> lessonsData =
       await (await database).query(Lesson.TABLE_NAME, where: '${Lesson.DAY} = ?', whereArgs: [day]);
-    return lessonsData.map((Map rawLesson) => Lesson.fromMap(rawLesson)).toList();
+    return lessonsData
+      .map((Map rawLesson) => Lesson.fromMap(rawLesson))
+      .toList()
+      ..sort((Lesson first, Lesson second) {
+        int firstSeconds = first.startHour * 60 + first.endHour;
+        int secondSeconds = second.startHour * 60 + second.endHour;
+        return firstSeconds.compareTo(secondSeconds);
+      });
   }
 
   Future<String> getLessonSubject(int lessonID) async {

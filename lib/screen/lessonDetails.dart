@@ -33,12 +33,12 @@ class _LessonDetailsState extends State<LessonDetails> {
     );
   }
 
-  void showAddTest() {
+  void showAddTest(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
       context: context,
       dismissOnTap: false,
       builder: (_) {
-        return AddTestBottomSheet();
+        return AddTestBottomSheet((Test test) {}, lessonDay, lessonID);
       }
     );
   }
@@ -114,13 +114,13 @@ class _LessonDetailsState extends State<LessonDetails> {
 
                   return ListTile(
                     title: Text(test.name),
-                    subtitle: Text(test.date),
+                    subtitle: Text(DateFormat('dd-MM-yyyy').format(test.date)),
                     leading: Icon(Icons.library_books)
                   );
                 } else {
                   return InkWell(
                     borderRadius: BorderRadius.circular(4.0),
-                    onTap: showAddTest,
+                    onTap: () => showAddTest(lesson.id, lesson.day),
                     child: const ListTile(
                       title: const Text('Dodaj sprawdzian'),
                       leading: const Icon(Icons.library_books),

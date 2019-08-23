@@ -10,14 +10,14 @@ class Test {
   int id;
   int lessonID;
   String name;
-  String date;
+  DateTime date;
 
   Map<String, dynamic> toMap() {
     return {
       ID: id,
       LESSON_ID: lessonID,
       NAME: name,
-      DATE: date
+      DATE: date.toString()
     };
   }
 
@@ -25,11 +25,11 @@ class Test {
     id = lessonData[ID];
     lessonID = lessonData[LESSON_ID];
     name = lessonData[NAME];
-    date = lessonData[DATE];
+    date = DateTime.parse(lessonData[DATE]);
   }
 
   Test({
-    @required this.id,
+    this.id,
     @required this.lessonID,
     @required this.name,
     @required this.date
