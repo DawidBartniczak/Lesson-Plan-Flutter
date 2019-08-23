@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/test.dart';
 
@@ -72,6 +73,12 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
                 labelText: 'Temat do sprawdzianu.',
                 filled: true
               ),
+              validator: (String value) {
+                if (value.isEmpty)
+                  return 'Temat jest wymagany';
+                return null;
+              },
+              onSaved: (String value) => _testContent = value,
             ),
             SizedBox(height: !_isTablet ? 16 : 24,),
             Row(
@@ -79,7 +86,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
               children: <Widget>[
                 Text(!_datePicked 
                   ? 'Wybierz datę:' 
-                  : 'Wybrana data:'),
+                  : 'Wybrana data: ${DateFormat('dd.MM').format(_testDate)}'),
                 FlatButton(
                   child: const Text('Wybierz'),
                   onPressed: _pickDate,
@@ -91,7 +98,18 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
               child: const Text('Zapisz'),
-              onPressed: () {},
+              onPressed: () {
+                if (_homeworkFormKey.currentState.validate() && _datePicked) {
+                  _homeworkFormKey.currentState.save();
+                  widget._addToDatabase(Test(
+                    id: null,
+                    lessonID: widget._lessonID,
+                    name: _testContent,
+                    date: _testDate
+                  ));
+                  Navigator.of(context).pop();
+                }
+              },
             )
           ],
         ),

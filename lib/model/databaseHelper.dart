@@ -113,26 +113,21 @@ class DatabaseHelper {
   Future<Test> getTestForLesson(int lessonID) async {
     List<Map<String, dynamic>> testData =
       await (await database).query(Test.TABLE_NAME, where: '${Test.LESSON_ID} = ?', whereArgs: [lessonID]);
-    return testData.map((Map rawTest) => Test.fromMap(rawTest)).toList()
-      .first;
+    Test test = testData.map((Map rawTest) => Test.fromMap(rawTest)).toList().first;
+    if (test.date.isAfter(DateTime.now()))
+      return test;
+    else {
+      await deleteTest(test.id);
+      return null;
+    }
   }
 
   Future deleteLesson(int lessonID) async {
-    await (await database).delete(
-      Lesson.TABLE_NAME,
-      where: '${Lesson.ID} = ?',
-      whereArgs: [lessonID]
-    );
-    await (await database).delete(
-      Homework.TABLE_NAME,
-      where: '${Homework.LESSON_ID} = ?',
-      whereArgs: [lessonID]
-    );
-    await (await database).delete(
-      Test.TABLE_NAME,
-      where: '${Test.LESSON_ID} = ?',
-      whereArgs: [lessonID]
-    );
+    Batch _batchWrite = (await database).batch();
+    _batchWrite.delete(Lesson.TABLE_NAME, where: '${Lesson.ID} = ?', whereArgs: [lessonID]);
+    _batchWrite.delete(Homework.TABLE_NAME, where: '${Homework.LESSON_ID} = ?', whereArgs: [lessonID]);
+    _batchWrite.delete(Test.TABLE_NAME, where: '${Test.LESSON_ID} = ?', whereArgs: [lessonID]);
+    await _batchWrite.commit();
   }
 
   Future deleteHomework(int homeworkID) async {
@@ -140,6 +135,14 @@ class DatabaseHelper {
       Homework.TABLE_NAME,
       where: 'id = ?',
       whereArgs: [homeworkID]
+    );
+  }
+
+  Future deleteTest(int testID) async {
+    await (await database).delete(
+      Test.TABLE_NAME,
+      where: 'id = ?',
+      whereArgs: [testID]
     );
   }
 

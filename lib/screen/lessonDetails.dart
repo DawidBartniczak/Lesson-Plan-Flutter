@@ -38,13 +38,22 @@ class _LessonDetailsState extends State<LessonDetails> {
       context: context,
       dismissOnTap: false,
       builder: (_) {
-        return AddTestBottomSheet((Test test) {}, lessonDay, lessonID);
+        return AddTestBottomSheet(
+          _insertTestIntoDatabase,
+          lessonDay,
+          lessonID,
+        );
       }
     );
   }
 
   void _insertHomeworkIntoDatabase(Homework homework) {
     _databaseHelper.insertHomework(homework)
+      .then((_) => setState(() {}));
+  }
+
+  void _insertTestIntoDatabase(Test test) {
+    _databaseHelper.insertTest(test)
       .then((_) => setState(() {}));
   }
 
