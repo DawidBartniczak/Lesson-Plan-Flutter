@@ -10,9 +10,8 @@ class HomeworkScreen extends StatefulWidget {
 }
 
 class _HomeworkScreenState extends State<HomeworkScreen> {
-  DatabaseHelper _databaseHelper = DatabaseHelper();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
   Future<List<Homework>> _homework;
-  int day = 1;
 
   @override
   void initState() {

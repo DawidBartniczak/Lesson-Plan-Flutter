@@ -69,7 +69,10 @@ class DatabaseHelper {
 
   Future<List<Test>> get tests async {
     List<Map<String, dynamic>> testsData = await (await database).query(Test.TABLE_NAME);
-    return testsData.map((Map rawTest) => Test.fromMap(rawTest)).toList();
+    return testsData
+      .map((Map rawTest) => Test.fromMap(rawTest))
+      .where((Test test) => test.date.isAfter(DateTime.now()))
+      .toList();
   }
 
   Future<List<Lesson>> getLessonsForDay(int day) async {
