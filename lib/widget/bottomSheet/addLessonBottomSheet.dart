@@ -61,7 +61,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             TextFormField(
               keyboardAppearance: Brightness.light,
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Lekcja',
                 filled: true
               ),
@@ -73,7 +73,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             TextFormField(
               focusNode: _classroomFocusNode,
               keyboardAppearance: Brightness.light,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Klasa',
                 filled: true
               ),
@@ -88,7 +88,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                   ? 'Godzina początku lekcji:' 
                   : 'Wybrane godziny: ${_startTime.hour}:${_startTime.minute} - ${_endTime.hour}:${_endTime.minute}'),
                 FlatButton(
-                  child: Text('Wybierz'),
+                  child: const Text('Wybierz'),
                   onPressed: pickStartDate,
                 ),
               ],
@@ -97,7 +97,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: Text('Zapisz'),
+              child: const Text('Zapisz'),
               onPressed: () {
                 if (_lessonFormKey.currentState.validate() && _startTime != null && _endTime != null) {
                   _lessonFormKey.currentState.save();

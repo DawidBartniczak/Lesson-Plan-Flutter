@@ -51,7 +51,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
 
   Widget _buildTabletLessonGrid(List<Lesson> lessons) {
     return GridView(
-      padding: EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(24.0),
       children: lessons.map((Lesson lesson) {
         return Card(
           shape: RoundedRectangleBorder(
@@ -72,7 +72,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
                     ),
                     alignment: Alignment.center,
                     child: Text(lesson.classroom,
-                        style: TextStyle(
+                      style: TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

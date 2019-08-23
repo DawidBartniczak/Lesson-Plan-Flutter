@@ -27,7 +27,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
           children: <Widget>[
             TextFormField(
               keyboardAppearance: Brightness.light,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Temat do sprawdzianu.',
                 filled: true
               ),
@@ -40,7 +40,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
                   ? 'Wybierz lekcję:' 
                   : 'Wybrana lekcja:'),
                 FlatButton(
-                  child: Text('Wybierz'),
+                  child: const Text('Wybierz'),
                   onPressed: () {},
                 ),
               ],
@@ -49,7 +49,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: Text('Zapisz'),
+              child: const Text('Zapisz'),
               onPressed: () {},
             )
           ],

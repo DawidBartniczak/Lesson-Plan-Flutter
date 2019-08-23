@@ -54,7 +54,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informacje'),
+        title: const Text('Informacje'),
       ),
       body: Column(
         children: <Widget>[
@@ -79,7 +79,7 @@ class _LessonDetailsState extends State<LessonDetails> {
                   return ListTile(
                     title: Text(homework.name),
                     subtitle: Text(DateFormat('dd-MM-yyyy').format(homework.date)),
-                    leading: Icon(Icons.home),
+                    leading: const Icon(Icons.home),
                     trailing: IconButton(
                       icon: Icon(Icons.check),
                       tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
@@ -94,10 +94,10 @@ class _LessonDetailsState extends State<LessonDetails> {
                   return InkWell(
                     borderRadius: BorderRadius.circular(4.0),
                     onTap: () => showAddHomework(lesson.id, lesson.day),
-                    child: ListTile(
-                      title: Text('Dodaj zadanie domowe'),
-                      leading: Icon(Icons.home),
-                      trailing: Icon(Icons.add),
+                    child: const ListTile(
+                      title: const Text('Dodaj zadanie domowe'),
+                      leading: const Icon(Icons.home),
+                      trailing: const Icon(Icons.add),
                     ),
                   );
                 }
@@ -121,10 +121,10 @@ class _LessonDetailsState extends State<LessonDetails> {
                   return InkWell(
                     borderRadius: BorderRadius.circular(4.0),
                     onTap: showAddTest,
-                    child: ListTile(
-                      title: Text('Dodaj sprawdzian'),
-                      leading: Icon(Icons.library_books),
-                      trailing: Icon(Icons.add),
+                    child: const ListTile(
+                      title: const Text('Dodaj sprawdzian'),
+                      leading: const Icon(Icons.library_books),
+                      trailing: const Icon(Icons.add),
                     ),
                   );
                 }

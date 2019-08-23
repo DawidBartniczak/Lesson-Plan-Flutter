@@ -60,7 +60,7 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
                     ),
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.check),
+                    icon: const Icon(Icons.check),
                     tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
                     color: !homework.isDone ? Colors.grey : Colors.green,
                     onPressed: () {
@@ -73,8 +73,8 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
             }).toList(),
           );
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
+          return const Center(
+            child: const CircularProgressIndicator(),
           );
         }
       },

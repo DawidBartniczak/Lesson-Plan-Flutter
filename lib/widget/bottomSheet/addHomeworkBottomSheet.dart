@@ -31,7 +31,7 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
           children: <Widget>[
             TextFormField(
               keyboardAppearance: Brightness.light,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Treść zadania domowego',
                 filled: true
               ),
@@ -46,7 +46,7 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: Text('Zapisz'),
+              child: const Text('Zapisz'),
               onPressed: () {
                 if (_homeworkFormKey.currentState.validate()) {
                   _homeworkFormKey.currentState.save();

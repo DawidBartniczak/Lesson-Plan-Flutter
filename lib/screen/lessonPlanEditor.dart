@@ -51,15 +51,15 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          title: Text('Czy na pewno?'),
-          content: Text('Czy na pewno chcesz usunąć tą lekcję?'),
+          title: const Text('Czy na pewno?'),
+          content: const Text('Czy na pewno chcesz usunąć tą lekcję?'),
           actions: <Widget>[
             FlatButton(
-              child: Text('Nie'),
+              child: const Text('Nie'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             FlatButton(
-              child: Text('Tak'),
+              child: const Text('Tak'),
               textColor: Colors.red,
               onPressed: () => Navigator.of(context).pop(true),
             )
@@ -74,7 +74,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       onTap: () => _showAddLesson(day),
       child: ListTile(
         leading: Icon(Icons.add),
-        title: Text('Dodaj'),
+        title: const Text('Dodaj'),
       ),
     );
   }
@@ -88,7 +88,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
         child: Text(lesson.classroom),
       ),
       trailing: IconButton(
-        icon: Icon(Icons.delete),
+        icon: const Icon(Icons.delete),
         color: Colors.red,
         onPressed: () {
           _showDeleteConfirm()
@@ -116,35 +116,35 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     return ListView(
       children: <Widget>[
         ExpansionTile(
-          title: Text('Poniedziałek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Poniedziałek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ..._lessonsForDay(1, lessons),
             _addLessonButton(1),
           ],
         ),
         ExpansionTile(
-          title: Text('Wtorek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Wtorek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ..._lessonsForDay(2, lessons),
             _addLessonButton(2),
           ],
         ),
         ExpansionTile(
-          title: Text('Środa', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Środa', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ..._lessonsForDay(3, lessons),
             _addLessonButton(3),
           ],
         ),
         ExpansionTile(
-          title: Text('Czwartek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Czwartek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ..._lessonsForDay(4, lessons),
             _addLessonButton(4),
           ],
         ),
         ExpansionTile(
-          title: Text('Piątek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Piątek', style: TextStyle(fontWeight: FontWeight.bold)),
           children: <Widget>[
             ..._lessonsForDay(5, lessons),
             _addLessonButton(5),
@@ -158,7 +158,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edytor Planu',),
+        title: const Text('Edytor Planu',),
       ),
       body: FutureBuilder(
         future: _lessons,
@@ -166,8 +166,8 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           if (snapshot.hasData) {
             return _buildLessonsList(snapshot.data);
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return const Center(
+              child: const CircularProgressIndicator(),
             );
           }
         },
