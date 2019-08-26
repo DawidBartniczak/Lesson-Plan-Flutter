@@ -71,6 +71,13 @@
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+#Ad Settings
+lib/model/admobHelper.dart
+
+#Firebase Settings
+google-services.json
+GoogleService-Info.plist
+
 #Icon Mockups
 Android Icons/
 iOS Icons/

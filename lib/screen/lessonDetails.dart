@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
+import '../model/admobHelper.dart';
 import '../model/lesson.dart';
 import '../model/homework.dart';
 import '../model/test.dart';
@@ -18,6 +19,13 @@ class LessonDetails extends StatefulWidget {
 
 class _LessonDetailsState extends State<LessonDetails> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    AdMobHelper.hideBanner();
+    AdMobHelper.loadInterstitial();
+    super.initState();
+  }
 
   void showAddHomework(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
@@ -49,12 +57,18 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   void _insertHomeworkIntoDatabase(Homework homework) {
     _databaseHelper.insertHomework(homework)
-      .then((_) => setState(() {}));
+      .then((_) {
+        setState(() {});
+        AdMobHelper.showInterstitial();
+      });
   }
 
   void _insertTestIntoDatabase(Test test) {
     _databaseHelper.insertTest(test)
-      .then((_) => setState(() {}));
+      .then((_) {
+        setState(() {});
+        AdMobHelper.showInterstitial();
+      });
   }
 
   @override

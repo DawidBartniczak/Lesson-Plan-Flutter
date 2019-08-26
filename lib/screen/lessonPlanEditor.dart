@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
+import '../model/admobHelper.dart';
 import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
@@ -18,6 +19,8 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
 
   @override
   void initState() {
+    AdMobHelper.hideBanner();
+    AdMobHelper.loadInterstitial();
     loadData();
     super.initState();
   }
@@ -30,7 +33,10 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
 
   void _insertLessonIntoDatabase(Lesson lesson) {
     _databaseHelper.insertLesson(lesson)
-      .then((_) => loadData());
+      .then((_) {
+        loadData();
+        AdMobHelper.showInterstitial();
+      });
   }
 
   void _showAddLesson(int day) {
@@ -173,6 +179,10 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.fitness_center),
+        onPressed: () => AdMobHelper.showInterstitial(),
       ),
     );
   }

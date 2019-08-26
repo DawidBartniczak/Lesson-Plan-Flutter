@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: ^1.1.6
+  firebase_admob: ^0.9.0+5
   intl: ^0.15.8
   rounded_modal: ^1.0.1
 

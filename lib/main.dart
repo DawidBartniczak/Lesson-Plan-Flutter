@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import './model/admobHelper.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
@@ -47,6 +48,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    AdMobHelper.showBanner();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    AdMobHelper.hideBanner();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).pushNamed(Settings.ROUTE_NAME);
                     break;
                   case 2:
-                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
+                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME)
+                      .then((_) {
+                        AdMobHelper.showBanner();
+                      });
                     break;
                 }
               },
