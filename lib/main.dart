@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import './widget/menuFAB.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
@@ -34,8 +33,8 @@ class MyApp extends StatelessWidget {
       },
       home: HomeScreen(),
       routes: {
-        'settings': (_) => Settings(),
-        'lessonPlanEditor': (_) => LessonPlanEditor(),
+        Settings.ROUTE_NAME: (_) => Settings(),
+        LessonPlanEditor.ROUTE_NAME: (_) => LessonPlanEditor(),
         LessonDetails.ROUTE_NAME: (_) => LessonDetails()
       },
     );
@@ -47,78 +46,56 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  TabController _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(
-      vsync: this,
-      length: 3
-    );
-    super.initState();
-  }
-
-  String tabBarText() {
-    if (_tabController.index == 0)
-      return 'Plan Lekcji';
-    else if (_tabController.index == 1)
-      return 'Zadania Domowe';
-    else if (_tabController.index == 2)
-      return 'Testy';
-    return '';
-  }
+class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(tabBarText()),
-      ),
-      body: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: _tabController,
-        children: <Widget>[
-          LessonPlanScreen(),
-          HomeworkScreen(),
-          TestScreen()
-        ],
-      ),
-      floatingActionButton: FloatingActionButtonMenu((int itemID) {
-        if (itemID == 1)
-          Navigator.of(context).pushNamed('lessonPlanEditor');
-        else if (itemID == 2) 
-          Navigator.of(context).pushNamed('settings');
-      }, [
-        FloatingActionButtonMenuItem(
-          id: 1,
-          tooltipText: 'Edytuj Plan',
-          itemIcon: Icons.edit
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plan Lekcji'),
+          actions: <Widget>[
+            PopupMenuButton(
+              onSelected: (int value) {
+                switch (value) {
+                  case 1:
+                    Navigator.of(context).pushNamed(Settings.ROUTE_NAME);
+                    break;
+                  case 2:
+                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
+                    break;
+                }
+              },
+              itemBuilder: (_) {
+                return [
+                  PopupMenuItem(
+                    child: Text('Ustawienia'),
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Edytor Planu'),
+                    value: 2,
+                  )
+                ];
+              },
+            )
+          ],
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(text: 'Plan Lekcji'),
+              Tab(text: 'Zad. Domowe'),
+              Tab(text: 'Sprawdziany'),
+            ],
+          ),
         ),
-        FloatingActionButtonMenuItem(
-          id: 2,
-          tooltipText: 'Ustawienia',
-          itemIcon: Icons.settings
-        )
-      ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _tabController.index,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            title: Text('Plan Lekcji'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Zadania Domowe'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            title: Text('Sprawdziany'),
-          )
-        ],
-        onTap: (int index) => setState(() => _tabController.animateTo(index)),
+        body: TabBarView(
+          children: <Widget>[
+            LessonPlanScreen(),
+            HomeworkScreen(),
+            TestScreen()
+          ],
+        ),
       ),
     );
   }

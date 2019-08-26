@@ -6,6 +6,8 @@ import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
 class LessonPlanEditor extends StatefulWidget {
+  static const ROUTE_NAME = 'lessonPlanEditor';
+
   @override
   _LessonPlanEditorState createState() => _LessonPlanEditorState();
 }

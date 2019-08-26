@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
+  static const ROUTE_NAME = 'settings';
+  
   @override
   _SettingsState createState() => _SettingsState();
 }
