@@ -55,9 +55,6 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
       padding: const EdgeInsets.all(24.0),
       children: lessons.map((Lesson lesson) {
         return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0)
-          ),
           child: InkWell(
             onTap: () => Navigator.of(context).pushNamed(LessonDetails.ROUTE_NAME, arguments: lesson),
             child: Column(
@@ -116,6 +113,35 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
     );
   }
 
+  Widget _buildDayChanger() {
+    return Card(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_left),
+            color: Colors.black,
+            onPressed: () {
+              if (day != 1)
+                day--;
+                loadData();
+            },
+          ),
+          Text(_dayText),
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_right),
+            color: Colors.black,
+            onPressed: () {
+              if (day != 5)
+                day++;
+                loadData();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool _isTablet = MediaQuery.of(context).size.width > 600;
@@ -128,32 +154,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
 
           return Column(
             children: <Widget>[
-              Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.keyboard_arrow_left),
-                      color: Colors.black,
-                      onPressed: () {
-                        if (day != 1)
-                          day--;
-                          loadData();
-                      },
-                    ),
-                    Text(_dayText),
-                    IconButton(
-                      icon: Icon(Icons.keyboard_arrow_right),
-                      color: Colors.black,
-                      onPressed: () {
-                        if (day != 5)
-                          day++;
-                          loadData();
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              _buildDayChanger(),
               Expanded(
                 child: !_isTablet 
                   ? _buildPhoneLessonList(lessons)

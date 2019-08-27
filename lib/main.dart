@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.deepPurpleAccent,
         iconTheme: IconThemeData(color: Colors.white,),
+        cardTheme: CardTheme(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))
+        )
       ),
       builder: (BuildContext context, Widget home) {
         return MediaQuery(

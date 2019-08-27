@@ -180,10 +180,6 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.fitness_center),
-        onPressed: () => AdMobHelper.showInterstitial(),
-      ),
     );
   }
 }

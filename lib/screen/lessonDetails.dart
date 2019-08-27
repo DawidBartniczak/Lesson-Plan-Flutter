@@ -27,7 +27,7 @@ class _LessonDetailsState extends State<LessonDetails> {
     super.initState();
   }
 
-  void showAddHomework(int lessonID, int lessonDay) {
+  void _showAddHomework(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
       context: context,
       dismissOnTap: false,
@@ -41,7 +41,7 @@ class _LessonDetailsState extends State<LessonDetails> {
     );
   }
 
-  void showAddTest(int lessonID, int lessonDay) {
+  void _showAddTest(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
       context: context,
       dismissOnTap: false,
@@ -71,6 +71,86 @@ class _LessonDetailsState extends State<LessonDetails> {
       });
   }
 
+  Widget _buildLessonTile(Lesson lesson) {
+    return Card(
+      child: ListTile(
+        title: Text(lesson.subject),
+        subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
+        leading: CircleAvatar(
+          radius: 24,
+          child: Text(lesson.classroom),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHomeworkTile(int lessonID, int lessonDay) {
+    return Card(
+      child: FutureBuilder(
+        future: _databaseHelper.getHomeworkForLesson(lessonID),
+        builder: (_, AsyncSnapshot<Homework> snapshot) {
+          if (snapshot.hasData) {
+            final Homework homework = snapshot.data;
+
+            return ListTile(
+              title: Text(homework.name),
+              subtitle: Text(DateFormat('dd-MM-yyyy').format(homework.date)),
+              leading: const Icon(Icons.home),
+              trailing: IconButton(
+                icon: Icon(Icons.check),
+                tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
+                color: !homework.isDone ? Colors.grey : Colors.green,
+                onPressed: () {
+                  _databaseHelper.changeHomeworkState(!homework.isDone, homework.id)
+                    .then((_) => setState(() {}));
+                },
+              ),
+            );
+          } else {
+            return InkWell(
+              borderRadius: BorderRadius.circular(4.0),
+              onTap: () => _showAddHomework(lessonID, lessonDay),
+              child: const ListTile(
+                title: const Text('Dodaj zadanie domowe'),
+                leading: const Icon(Icons.home),
+                trailing: const Icon(Icons.add),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildTestTile(int lessonID, int lessonDay) {
+    return Card(
+      child: FutureBuilder(
+        future: _databaseHelper.getTestForLesson(lessonID),
+        builder: (_, AsyncSnapshot<Test> snapshot) {
+          if (snapshot.hasData) {
+            final Test test = snapshot.data;
+
+            return ListTile(
+              title: Text(test.name),
+              subtitle: Text(DateFormat('dd-MM-yyyy').format(test.date)),
+              leading: Icon(Icons.library_books)
+            );
+          } else {
+            return InkWell(
+              borderRadius: BorderRadius.circular(4.0),
+              onTap: () => _showAddTest(lessonID, lessonDay),
+              child: const ListTile(
+                title: const Text('Dodaj sprawdzian'),
+                leading: const Icon(Icons.library_books),
+                trailing: const Icon(Icons.add),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Lesson lesson = ModalRoute.of(context).settings.arguments;
@@ -81,79 +161,9 @@ class _LessonDetailsState extends State<LessonDetails> {
       ),
       body: Column(
         children: <Widget>[
-          Card(
-            child: ListTile(
-              title: Text(lesson.subject),
-              subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
-              leading: CircleAvatar(
-                radius: 24,
-                child: Text(lesson.classroom),
-              ),
-            ),
-          ),
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-            child: FutureBuilder(
-              future: _databaseHelper.getHomeworkForLesson(lesson.id),
-              builder: (_, AsyncSnapshot<Homework> snapshot) {
-                if (snapshot.hasData) {
-                  final Homework homework = snapshot.data;
-
-                  return ListTile(
-                    title: Text(homework.name),
-                    subtitle: Text(DateFormat('dd-MM-yyyy').format(homework.date)),
-                    leading: const Icon(Icons.home),
-                    trailing: IconButton(
-                      icon: Icon(Icons.check),
-                      tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
-                      color: !homework.isDone ? Colors.grey : Colors.green,
-                      onPressed: () {
-                        _databaseHelper.changeHomeworkState(!homework.isDone, homework.id)
-                          .then((_) => setState(() {}));
-                      },
-                    ),
-                  );
-                } else {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(4.0),
-                    onTap: () => showAddHomework(lesson.id, lesson.day),
-                    child: const ListTile(
-                      title: const Text('Dodaj zadanie domowe'),
-                      leading: const Icon(Icons.home),
-                      trailing: const Icon(Icons.add),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-            child: FutureBuilder(
-              future: _databaseHelper.getTestForLesson(lesson.id),
-              builder: (_, AsyncSnapshot<Test> snapshot) {
-                if (snapshot.hasData) {
-                  final Test test = snapshot.data;
-
-                  return ListTile(
-                    title: Text(test.name),
-                    subtitle: Text(DateFormat('dd-MM-yyyy').format(test.date)),
-                    leading: Icon(Icons.library_books)
-                  );
-                } else {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(4.0),
-                    onTap: () => showAddTest(lesson.id, lesson.day),
-                    child: const ListTile(
-                      title: const Text('Dodaj sprawdzian'),
-                      leading: const Icon(Icons.library_books),
-                      trailing: const Icon(Icons.add),
-                    ),
-                  );
-                }
-              },
-            ),
-          )
+          _buildLessonTile(lesson),
+          _buildHomeworkTile(lesson.id, lesson.day),
+          _buildTestTile(lesson.id, lesson.day),
         ],
       ),
     );
