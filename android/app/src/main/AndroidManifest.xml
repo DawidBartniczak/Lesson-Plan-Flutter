@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Plan Lekcji"
+        android:label="Lesson Plan"
         android:icon="@mipmap/ic_launcher_lessonplan">
         <activity
             android:name=".MainActivity"
@@ -29,5 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9851792996636187~1599199853"/>
     </application>
 </manifest>

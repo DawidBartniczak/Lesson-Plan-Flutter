@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../model/localizationHelper.dart';
 import '../../model/test.dart';
 
 class AddTestBottomSheet extends StatefulWidget {
@@ -37,14 +38,16 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
       } else {
         showDialog(
           context: context,
-          builder: (_) {
+          builder: (BuildContext context) {
+            LocalizationHelper localizationHelper = LocalizationHelper.of(context);
+
             return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-              title: const Text('Zła data!'),
-              content: const Text('Tej lekcji nie ma w wybranym dniu.'),
+              title: Text(localizationHelper.localize('test_invaliddate_title')),
+              content: Text(localizationHelper.localize('test_invaliddate_message')),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Zamknij'),
+                  child: Text(localizationHelper.localize('text_dismiss')),
                   onPressed: () => Navigator.of(context).pop(),
                 )
               ],
@@ -57,6 +60,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationHelper localizationHelper = LocalizationHelper.of(context);
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
     return Padding(
@@ -69,13 +73,13 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
           children: <Widget>[
             TextFormField(
               keyboardAppearance: Brightness.light,
-              decoration: const InputDecoration(
-                labelText: 'Temat do sprawdzianu.',
+              decoration: InputDecoration(
+                labelText: localizationHelper.localize('text_test_subject'),
                 filled: true
               ),
               validator: (String value) {
                 if (value.isEmpty)
-                  return 'Temat jest wymagany';
+                  return localizationHelper.localize('error_subjectempty');
                 return null;
               },
               onSaved: (String value) => _testContent = value,
@@ -85,10 +89,10 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(!_datePicked 
-                  ? 'Wybierz datę:' 
-                  : 'Wybrana data: ${DateFormat('dd.MM').format(_testDate)}'),
+                  ? localizationHelper.localize('text_selectdate')
+                  : DateFormat('dd.MM').format(_testDate)),
                 FlatButton(
-                  child: const Text('Wybierz'),
+                  child: Text(localizationHelper.localize('text_select')),
                   onPressed: _pickDate,
                 ),
               ],
@@ -97,7 +101,7 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: const Text('Zapisz'),
+              child: Text(localizationHelper.localize('text_save')),
               onPressed: () {
                 if (_homeworkFormKey.currentState.validate() && _datePicked) {
                   _homeworkFormKey.currentState.save();

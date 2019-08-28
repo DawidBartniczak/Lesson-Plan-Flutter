@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/databaseHelper.dart';
-import '../model/admobHelper.dart';
+import '../model/localizationHelper.dart';
 import '../model/lesson.dart';
 import '../screen/lessonDetails.dart';
 
@@ -25,29 +25,6 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
     setState(() {
       _lessons = _databaseHelper.getLessonsForDay(day);
     });
-  }
-
-  String get _dayText {
-    switch (day) {
-      case 1:
-        return 'Poniedziałek';
-        break;
-      case 2:
-        return 'Wtorek';
-        break;
-      case 3:
-        return 'Środa';
-        break;
-      case 4:
-        return 'Czwartek';
-        break;
-      case 5:
-        return 'Piątek';
-        break;
-      default:
-        return '';
-        break;
-    }
   }
 
   Widget _buildTabletLessonGrid(List<Lesson> lessons) {
@@ -113,7 +90,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
     );
   }
 
-  Widget _buildDayChanger() {
+  Widget _buildDayChanger(BuildContext context) {
     return Card(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +104,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
                 loadData();
             },
           ),
-          Text(_dayText),
+          Text(LocalizationHelper.of(context).localize('day_$day')),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_right),
             color: Colors.black,
@@ -154,7 +131,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
 
           return Column(
             children: <Widget>[
-              _buildDayChanger(),
+              _buildDayChanger(context),
               Expanded(
                 child: !_isTablet 
                   ? _buildPhoneLessonList(lessons)

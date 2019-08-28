@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lessonplan/model/localizationHelper.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
@@ -59,15 +60,15 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          title: const Text('Czy na pewno?'),
-          content: const Text('Czy na pewno chcesz usunąć tą lekcję?'),
+          title: Text(LocalizationHelper.of(context).localize('lesson_remove_title')),
+          content: Text(LocalizationHelper.of(context).localize('lesson_remove_message')),
           actions: <Widget>[
             FlatButton(
-              child: const Text('Nie'),
+              child: Text(LocalizationHelper.of(context).localize('text_no')),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             FlatButton(
-              child: const Text('Tak'),
+              child: Text(LocalizationHelper.of(context).localize('text_yes')),
               textColor: Colors.red,
               onPressed: () => Navigator.of(context).pop(true),
             )
@@ -82,7 +83,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       onTap: () => _showAddLesson(day),
       child: ListTile(
         leading: Icon(Icons.add),
-        title: const Text('Dodaj'),
+        title: Text(LocalizationHelper.of(context).localize('text_lesson_add')),
       ),
     );
   }
@@ -124,35 +125,35 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     return ListView(
       children: <Widget>[
         ExpansionTile(
-          title: const Text('Poniedziałek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(LocalizationHelper.of(context).localize('day_1')),
           children: <Widget>[
             ..._lessonsForDay(1, lessons),
             _addLessonButton(1),
           ],
         ),
         ExpansionTile(
-          title: const Text('Wtorek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(LocalizationHelper.of(context).localize('day_2')),
           children: <Widget>[
             ..._lessonsForDay(2, lessons),
             _addLessonButton(2),
           ],
         ),
         ExpansionTile(
-          title: const Text('Środa', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(LocalizationHelper.of(context).localize('day_3')),
           children: <Widget>[
             ..._lessonsForDay(3, lessons),
             _addLessonButton(3),
           ],
         ),
         ExpansionTile(
-          title: const Text('Czwartek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(LocalizationHelper.of(context).localize('day_4')),
           children: <Widget>[
             ..._lessonsForDay(4, lessons),
             _addLessonButton(4),
           ],
         ),
         ExpansionTile(
-          title: const Text('Piątek', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(LocalizationHelper.of(context).localize('day_5')),
           children: <Widget>[
             ..._lessonsForDay(5, lessons),
             _addLessonButton(5),
@@ -166,7 +167,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edytor Planu',),
+        title: Text(LocalizationHelper.of(context).localize('screen_lessonplaneditor')),
       ),
       body: FutureBuilder(
         future: _lessons,

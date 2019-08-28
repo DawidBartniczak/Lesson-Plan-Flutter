@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/localizationHelper.dart';
 import '../../model/homework.dart';
 
 class AddHomeworkBottomSheet extends StatefulWidget {
@@ -19,6 +20,7 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationHelper localizationHelper = LocalizationHelper.of(context);
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
     return Padding(
@@ -31,13 +33,13 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
           children: <Widget>[
             TextFormField(
               keyboardAppearance: Brightness.light,
-              decoration: const InputDecoration(
-                labelText: 'Treść zadania domowego',
+              decoration: InputDecoration(
+                labelText: localizationHelper.localize('text_homework_content'),
                 filled: true
               ),
               validator: (String value) {
                 if (value.isEmpty)
-                  return 'Treść jest wymagana';
+                  return localizationHelper.localize('error_contentempty');
                 return null;
               },
               onSaved: (String value) => _homeworkContent = value,
@@ -46,7 +48,7 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: const Text('Zapisz'),
+              child: Text(localizationHelper.localize('text_save')),
               onPressed: () {
                 if (_homeworkFormKey.currentState.validate()) {
                   _homeworkFormKey.currentState.save();

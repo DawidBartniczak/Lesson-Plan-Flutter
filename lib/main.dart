@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+import './model/localizationHelper.dart';
 import './model/admobHelper.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Plan Lekcji',
+      title: 'Lesson Plan',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.deepPurpleAccent,
@@ -29,6 +31,24 @@ class MyApp extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))
         )
       ),
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('pl', 'PL'),
+      ],
+      localizationsDelegates: [
+        LocalizationHelper.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+        if (locale == null)
+          return supportedLocales.first;
+
+        for (Locale supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
       builder: (BuildContext context, Widget home) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
@@ -65,11 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationHelper localizationHelper = LocalizationHelper.of(context);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Plan Lekcji'),
+          title: Text(localizationHelper.localize('app_title')),
           actions: <Widget>[
             PopupMenuButton(
               onSelected: (int value) {
@@ -88,11 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (_) {
                 return [
                   PopupMenuItem(
-                    child: Text('Ustawienia'),
+                    child: Text(localizationHelper.localize('screen_settings')),
                     value: 1,
                   ),
                   PopupMenuItem(
-                    child: Text('Edytor Planu'),
+                    child: Text(localizationHelper.localize('screen_lessonplaneditor')),
                     value: 2,
                   )
                 ];
@@ -101,9 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
           bottom: TabBar(
             tabs: <Widget>[
-              Tab(text: 'Plan Lekcji'),
-              Tab(text: 'Zad. Domowe'),
-              Tab(text: 'Sprawdziany'),
+              Tab(text: localizationHelper.localize('tab_lessonplan')),
+              Tab(text: localizationHelper.localize('tab_homwork')),
+              Tab(text: localizationHelper.localize('tab_tests')),
             ],
           ),
         ),

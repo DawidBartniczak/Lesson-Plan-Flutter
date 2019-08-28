@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
+import '../model/localizationHelper.dart';
 import '../model/databaseHelper.dart';
 import '../model/admobHelper.dart';
 import '../model/lesson.dart';
@@ -110,8 +111,8 @@ class _LessonDetailsState extends State<LessonDetails> {
             return InkWell(
               borderRadius: BorderRadius.circular(4.0),
               onTap: () => _showAddHomework(lessonID, lessonDay),
-              child: const ListTile(
-                title: const Text('Dodaj zadanie domowe'),
+              child: ListTile(
+                title: Text(LocalizationHelper.of(context).localize('text_homework_add')),
                 leading: const Icon(Icons.home),
                 trailing: const Icon(Icons.add),
               ),
@@ -139,8 +140,8 @@ class _LessonDetailsState extends State<LessonDetails> {
             return InkWell(
               borderRadius: BorderRadius.circular(4.0),
               onTap: () => _showAddTest(lessonID, lessonDay),
-              child: const ListTile(
-                title: const Text('Dodaj sprawdzian'),
+              child: ListTile(
+                title: Text(LocalizationHelper.of(context).localize('text_test_add')),
                 leading: const Icon(Icons.library_books),
                 trailing: const Icon(Icons.add),
               ),
@@ -157,7 +158,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Informacje'),
+        title: Text(LocalizationHelper.of(context).localize('screen_lessondetials')),
       ),
       body: Column(
         children: <Widget>[

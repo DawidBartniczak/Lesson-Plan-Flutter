@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/localizationHelper.dart';
 import '../../model/lesson.dart';
 
 class AddLessonBottomSheet extends StatefulWidget {
@@ -42,12 +43,13 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
 
   String formValidaror(String value) {
     if (value.isEmpty)
-      return 'To pole jest wymagane';
+      return LocalizationHelper.of(context).localize('error_fieldempty');
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    LocalizationHelper localizationHelper = LocalizationHelper.of(context);
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
     return Padding(
@@ -61,8 +63,8 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             TextFormField(
               keyboardAppearance: Brightness.light,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Lekcja',
+              decoration: InputDecoration(
+                labelText: localizationHelper.localize('text_lesson_subject'),
                 filled: true
               ),
               onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_classroomFocusNode),
@@ -73,8 +75,8 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             TextFormField(
               focusNode: _classroomFocusNode,
               keyboardAppearance: Brightness.light,
-              decoration: const InputDecoration(
-                labelText: 'Klasa',
+              decoration: InputDecoration(
+                labelText: localizationHelper.localize('text_lesson_classroom'),
                 filled: true
               ),
               validator: formValidaror,
@@ -85,10 +87,10 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(!_timePicked 
-                  ? 'Godzina początku lekcji:' 
-                  : 'Wybrane godziny: ${_startTime.hour}:${_startTime.minute} - ${_endTime.hour}:${_endTime.minute}'),
+                  ? localizationHelper.localize('text_select_hour')
+                  : '${_startTime.hour}:${_startTime.minute} - ${_endTime.hour}:${_endTime.minute}'),
                 FlatButton(
-                  child: const Text('Wybierz'),
+                  child: Text(localizationHelper.localize('text_select')),
                   onPressed: pickStartDate,
                 ),
               ],
@@ -97,7 +99,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
-              child: const Text('Zapisz'),
+              child: Text(localizationHelper.localize('text_save')),
               onPressed: () {
                 if (_lessonFormKey.currentState.validate() && _startTime != null && _endTime != null) {
                   _lessonFormKey.currentState.save();
