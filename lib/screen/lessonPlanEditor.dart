@@ -26,6 +26,12 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    AdMobHelper.showBanner();
+    super.dispose();
+  }
+
   void loadData() {
     setState(() {
       _lessons = _databaseHelper.lessons;

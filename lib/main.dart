@@ -49,12 +49,6 @@ class MyApp extends StatelessWidget {
         }
         return supportedLocales.first;
       },
-      builder: (BuildContext context, Widget home) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: home,
-        );
-      },
       home: HomeScreen(),
       routes: {
         Settings.ROUTE_NAME: (_) => Settings(),
@@ -100,10 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).pushNamed(Settings.ROUTE_NAME);
                     break;
                   case 2:
-                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME)
-                      .then((_) {
-                        AdMobHelper.showBanner();
-                      });
+                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
                     break;
                 }
               },

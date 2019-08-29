@@ -53,8 +53,10 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
                 if (_homeworkFormKey.currentState.validate()) {
                   _homeworkFormKey.currentState.save();
                   DateTime nextLessonDate = DateTime.now()
-                    .subtract(Duration(days: DateTime.now().weekday - widget._day))
-                    .add(Duration(days: 7));
+                    .subtract(Duration(days: DateTime.now().weekday - widget._day));
+                  if (nextLessonDate.isBefore(DateTime.now())) {
+                    nextLessonDate = nextLessonDate.add(Duration(days: 7));
+                  }
                   widget._addToDatabase(Homework(
                     id: null,
                     lessonID: widget._lessonID,

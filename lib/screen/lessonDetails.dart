@@ -28,6 +28,12 @@ class _LessonDetailsState extends State<LessonDetails> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    //AdMobHelper.showBanner();
+    super.dispose();
+  }
+
   void _showAddHomework(int lessonID, int lessonDay) {
     showRoundedModalBottomSheet(
       context: context,
