@@ -101,10 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (_) {
                 return [
                   PopupMenuItem(
-                    child: Text(localizationHelper.localize('screen_settings')),
-                    value: 1,
-                  ),
-                  PopupMenuItem(
                     child: Text(localizationHelper.localize('screen_lessonplaneditor')),
                     value: 2,
                   )
