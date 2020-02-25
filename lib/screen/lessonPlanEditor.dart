@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lessonplan/model/localizationHelper.dart';
-import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/databaseHelper.dart';
 import '../model/admobHelper.dart';
@@ -47,9 +46,9 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   }
 
   void _showAddLesson(int day) {
-    showRoundedModalBottomSheet(
+    showModalBottomSheet(
       context: context,
-      dismissOnTap: false,
+      isScrollControlled: true,
       builder: (_) {
         return AddLessonBottomSheet(
           _insertLessonIntoDatabase,

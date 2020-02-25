@@ -97,7 +97,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.keyboard_arrow_left),
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
             onPressed: () {
               if (day != 1)
                 day--;
@@ -107,7 +107,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
           Text(LocalizationHelper.of(context).localize('day_$day')),
           IconButton(
             icon: Icon(Icons.keyboard_arrow_right),
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
             onPressed: () {
               if (day != 5)
                 day++;

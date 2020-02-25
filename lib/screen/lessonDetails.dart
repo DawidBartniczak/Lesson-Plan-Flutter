@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rounded_modal/rounded_modal.dart';
 
 import '../model/localizationHelper.dart';
 import '../model/databaseHelper.dart';
@@ -35,9 +34,9 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   void _showAddHomework(int lessonID, int lessonDay) {
-    showRoundedModalBottomSheet(
+    showModalBottomSheet(
       context: context,
-      dismissOnTap: false,
+      isScrollControlled: true,
       builder: (_) {
         return AddHomeworkBottomSheet(
           _insertHomeworkIntoDatabase,
@@ -49,9 +48,9 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   void _showAddTest(int lessonID, int lessonDay) {
-    showRoundedModalBottomSheet(
+    showModalBottomSheet(
       context: context,
-      dismissOnTap: false,
+      isScrollControlled: true,
       builder: (_) {
         return AddTestBottomSheet(
           _insertTestIntoDatabase,

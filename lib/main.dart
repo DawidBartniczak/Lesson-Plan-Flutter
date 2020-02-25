@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import './model/localizationHelper.dart';
 import './model/admobHelper.dart';
+import './provider/themeModeProvider.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
@@ -12,49 +14,60 @@ import './screen/lessonPlanEditor.dart';
 import './screen/lessonDetails.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,]);
   runApp(MyApp());
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lesson Plan',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        accentColor: Colors.deepPurpleAccent,
-        iconTheme: IconThemeData(color: Colors.white,),
-        cardTheme: CardTheme(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))
-        )
-      ),
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('pl', 'PL'),
-      ],
-      localizationsDelegates: [
-        LocalizationHelper.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
-        if (locale == null)
-          return supportedLocales.first;
+    return ChangeNotifierProvider.value(
+      value: ThemeModeProvider(),
+      child: Consumer<ThemeModeProvider>(
+        builder: (_, ThemeModeProvider themeModeProvider, _2) {
+          return  MaterialApp(
+            title: 'Lesson Plan',
+            themeMode: themeModeProvider.themeMode,
+            theme: ThemeData(
+              primarySwatch: Colors.deepPurple,
+              accentColor: Colors.deepPurpleAccent,
+              iconTheme: IconThemeData(color: Colors.white,),
+              cardTheme: CardTheme(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))
+              ),
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              
+            ),
+            supportedLocales: [
+              Locale('en', 'US'),
+              Locale('pl', 'PL'),
+            ],
+            localizationsDelegates: [
+              LocalizationHelper.delegate,
+              GlobalMaterialLocalizations.delegate,
+            ],
+            localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+              if (locale == null)
+                return supportedLocales.first;
 
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode)
-            return supportedLocale;
+              for (Locale supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode)
+                  return supportedLocale;
+              }
+              return supportedLocales.first;
+            },
+            home: HomeScreen(),
+            routes: {
+              Settings.ROUTE_NAME: (_) => Settings(),
+              LessonPlanEditor.ROUTE_NAME: (_) => LessonPlanEditor(),
+              LessonDetails.ROUTE_NAME: (_) => LessonDetails()
+            },
+          );
         }
-        return supportedLocales.first;
-      },
-      home: HomeScreen(),
-      routes: {
-        Settings.ROUTE_NAME: (_) => Settings(),
-        LessonPlanEditor.ROUTE_NAME: (_) => LessonPlanEditor(),
-        LessonDetails.ROUTE_NAME: (_) => LessonDetails()
-      },
+      ),
     );
   }
 }
@@ -103,7 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   PopupMenuItem(
                     child: Text(localizationHelper.localize('screen_lessonplaneditor')),
                     value: 2,
-                  )
+                  ),
+                  PopupMenuItem(
+                    child: Text(localizationHelper.localize('screen_settings')),
+                    value: 1,
+                  ),
                 ];
               },
             )

@@ -24,50 +24,53 @@ class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
     return Padding(
-      padding: EdgeInsets.all(!_isTablet ? 16 : 24),
-      child: Form(
-        key: _homeworkFormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextFormField(
-              keyboardAppearance: Brightness.light,
-              decoration: InputDecoration(
-                labelText: localizationHelper.localize('text_homework_content'),
-                filled: true
+      padding: MediaQuery.of(context).viewInsets,
+      child: Padding(
+        padding: EdgeInsets.all(!_isTablet ? 16 : 24),
+        child: Form(
+          key: _homeworkFormKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                keyboardAppearance: Brightness.light,
+                decoration: InputDecoration(
+                  labelText: localizationHelper.localize('text_homework_content'),
+                  filled: true
+                ),
+                validator: (String value) {
+                  if (value.isEmpty)
+                    return localizationHelper.localize('error_contentempty');
+                  return null;
+                },
+                onSaved: (String value) => _homeworkContent = value,
               ),
-              validator: (String value) {
-                if (value.isEmpty)
-                  return localizationHelper.localize('error_contentempty');
-                return null;
-              },
-              onSaved: (String value) => _homeworkContent = value,
-            ),
-            SizedBox(height: !_isTablet ? 8 : 16,),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
-              child: Text(localizationHelper.localize('text_save')),
-              onPressed: () {
-                if (_homeworkFormKey.currentState.validate()) {
-                  _homeworkFormKey.currentState.save();
-                  DateTime nextLessonDate = DateTime.now()
-                    .subtract(Duration(days: DateTime.now().weekday - widget._day));
-                  if (nextLessonDate.isBefore(DateTime.now())) {
-                    nextLessonDate = nextLessonDate.add(Duration(days: 7));
+              SizedBox(height: !_isTablet ? 8 : 16,),
+              RaisedButton(
+                color: Theme.of(context).accentColor,
+                textColor: Colors.white,
+                child: Text(localizationHelper.localize('text_save')),
+                onPressed: () {
+                  if (_homeworkFormKey.currentState.validate()) {
+                    _homeworkFormKey.currentState.save();
+                    DateTime nextLessonDate = DateTime.now()
+                      .subtract(Duration(days: DateTime.now().weekday - widget._day));
+                    if (nextLessonDate.isBefore(DateTime.now())) {
+                      nextLessonDate = nextLessonDate.add(Duration(days: 7));
+                    }
+                    widget._addToDatabase(Homework(
+                      id: null,
+                      lessonID: widget._lessonID,
+                      name: _homeworkContent,
+                      date: nextLessonDate
+                    ));
+                    Navigator.of(context).pop();
                   }
-                  widget._addToDatabase(Homework(
-                    id: null,
-                    lessonID: widget._lessonID,
-                    name: _homeworkContent,
-                    date: nextLessonDate
-                  ));
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

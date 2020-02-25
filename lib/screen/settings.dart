@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/themeModeProvider.dart';
+import '../model/admobHelper.dart';
 
 class Settings extends StatefulWidget {
   static const ROUTE_NAME = 'settings';
@@ -8,46 +14,70 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool _sevenDayPlan = false;
+
+  @override
+  void initState() {
+    AdMobHelper.hideBanner();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    AdMobHelper.showBanner();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ustawienia'),
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child:
-                Text('Aplikacja', style: _theme.textTheme.subtitle),
+          Consumer<ThemeModeProvider>(
+            builder: (BuildContext context, ThemeModeProvider themeModeProvider, _) {
+              ThemeMode themeMode = themeModeProvider.themeMode;
+
+              return ExpansionTile(
+                title: Text('Theme'),
+                subtitle: Text('Change theme of the app.'),
+                children: <Widget>[
+                  ListTile(
+                    title: Text('System Defined'),
+                    subtitle: Text(
+                      Platform.isAndroid 
+                        ? 'Will use your system\'s default theme (Android Q+)'
+                        : 'Will use your system\'s default theme (iOS 13+)' ,
+                    ),
+                    leading: Radio(
+                      value: ThemeMode.system,
+                      groupValue: themeMode,
+                      onChanged: themeModeProvider.changeThemeMode,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Light'),
+                    subtitle: Text('Will use Light Mode'),
+                    leading: Radio(
+                      value: ThemeMode.light,
+                      groupValue: themeMode,
+                      onChanged: themeModeProvider.changeThemeMode,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Dark'),
+                    subtitle: Text('Will use Dark Mode'),
+                    leading: Radio(
+                      value: ThemeMode.dark,
+                      groupValue: themeMode,
+                      onChanged: themeModeProvider.changeThemeMode,
+                    ),
+                  ),
+                ],
+              );
+            }
           ),
-          ListTile(
-            title: const Text('Siedmo dniowy plan'),
-            subtitle: const Text('Plan lekcji obejmujący weekend.'),
-            trailing: Switch(
-              value: _sevenDayPlan,
-              onChanged: (bool newValue) =>
-                  setState(() => _sevenDayPlan = newValue),
-            ),
-          ),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child:
-                Text('Zerowanie', style: _theme.textTheme.subtitle),
-          ),
-          InkWell(
-            onTap: () {},
-            child: const ListTile(
-              title: const Text('Reset', style: TextStyle(color: Colors.red),),
-              subtitle: const Text('Usuń dane z tego urządzenia.'),
-            ),
-          ),
-          const Divider()
         ],
       ),
     );
