@@ -100,30 +100,16 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(localizationHelper.localize('app_title')),
           actions: <Widget>[
-            PopupMenuButton(
-              onSelected: (int value) {
-                switch (value) {
-                  case 1:
-                    Navigator.of(context).pushNamed(Settings.ROUTE_NAME);
-                    break;
-                  case 2:
-                    Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
-                    break;
-                }
-              },
-              itemBuilder: (_) {
-                return [
-                  PopupMenuItem(
-                    child: Text(localizationHelper.localize('screen_lessonplaneditor')),
-                    value: 2,
-                  ),
-                  PopupMenuItem(
-                    child: Text(localizationHelper.localize('screen_settings')),
-                    value: 1,
-                  ),
-                ];
-              },
-            )
+            IconButton(
+              icon: Icon(Icons.edit),
+              tooltip: localizationHelper.localize('screen_lessonplaneditor'),
+              onPressed: () => Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME),
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              tooltip: localizationHelper.localize('screen_settings'),
+              onPressed: () => Navigator.of(context).pushNamed(Settings.ROUTE_NAME),
+            ),
           ],
           bottom: TabBar(
             tabs: <Widget>[

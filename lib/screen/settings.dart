@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../model/localizationHelper.dart';
 import '../provider/themeModeProvider.dart';
 import '../model/admobHelper.dart';
 
@@ -31,25 +32,22 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ustawienia'),
+        title: Text(LocalizationHelper.of(context).localize('screen_settings')),
       ),
       body: ListView(
         children: <Widget>[
           Consumer<ThemeModeProvider>(
             builder: (BuildContext context, ThemeModeProvider themeModeProvider, _) {
+              LocalizationHelper localizationHelper = LocalizationHelper.of(context);
               ThemeMode themeMode = themeModeProvider.themeMode;
 
               return ExpansionTile(
-                title: Text('Theme'),
-                subtitle: Text('Change theme of the app.'),
+                title: Text(localizationHelper.localize('settings_theme_header')),
+                subtitle: Text(localizationHelper.localize('settings_theme_description')),
                 children: <Widget>[
                   ListTile(
-                    title: Text('System Defined'),
-                    subtitle: Text(
-                      Platform.isAndroid 
-                        ? 'Will use your system\'s default theme (Android Q+)'
-                        : 'Will use your system\'s default theme (iOS 13+)' ,
-                    ),
+                    title: Text(localizationHelper.localize('settings_theme_sysdefined_header')),
+                    subtitle: Text(localizationHelper.localize('settings_theme_sysdefined_description')),
                     leading: Radio(
                       value: ThemeMode.system,
                       groupValue: themeMode,
@@ -57,8 +55,8 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Light'),
-                    subtitle: Text('Will use Light Mode'),
+                    title: Text(localizationHelper.localize('settings_theme_light_header')),
+                    subtitle: Text(localizationHelper.localize('settings_theme_light_description')),
                     leading: Radio(
                       value: ThemeMode.light,
                       groupValue: themeMode,
@@ -66,8 +64,8 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Dark'),
-                    subtitle: Text('Will use Dark Mode'),
+                    title: Text(localizationHelper.localize('settings_theme_dark_header')),
+                    subtitle: Text(localizationHelper.localize('settings_theme_dark_description')),
                     leading: Radio(
                       value: ThemeMode.dark,
                       groupValue: themeMode,

@@ -104,7 +104,6 @@ class _LessonDetailsState extends State<LessonDetails> {
               leading: const Icon(Icons.home),
               trailing: IconButton(
                 icon: Icon(Icons.check),
-                tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
                 color: !homework.isDone ? Colors.grey : Colors.green,
                 onPressed: () {
                   _databaseHelper.changeHomeworkState(!homework.isDone, homework.id)

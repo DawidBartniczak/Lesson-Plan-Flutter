@@ -50,7 +50,6 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
         ),
         trailing: IconButton(
           icon: const Icon(Icons.check),
-          tooltip: !homework.isDone ? 'Nie Zrobione' : 'Zrobione',
           color: !homework.isDone ? Colors.grey : Colors.green,
           onPressed: () {
             _databaseHelper.changeHomeworkState(!homework.isDone, homework.id)
