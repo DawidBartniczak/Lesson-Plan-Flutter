@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import './model/localizationHelper.dart';
-import './model/admobHelper.dart';
 import './provider/themeModeProvider.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
@@ -78,18 +77,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    AdMobHelper.showBanner();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    AdMobHelper.hideBanner();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     LocalizationHelper localizationHelper = LocalizationHelper.of(context);

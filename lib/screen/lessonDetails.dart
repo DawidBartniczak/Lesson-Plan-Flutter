@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 
 import '../model/localizationHelper.dart';
 import '../model/databaseHelper.dart';
-import '../model/admobHelper.dart';
 import '../model/lesson.dart';
 import '../model/homework.dart';
 import '../model/test.dart';
@@ -19,19 +18,6 @@ class LessonDetails extends StatefulWidget {
 
 class _LessonDetailsState extends State<LessonDetails> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
-
-  @override
-  void initState() {
-    AdMobHelper.hideBanner();
-    AdMobHelper.loadInterstitial();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    //AdMobHelper.showBanner();
-    super.dispose();
-  }
 
   void _showAddHomework(int lessonID, int lessonDay) {
     showModalBottomSheet(
@@ -62,19 +48,11 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   void _insertHomeworkIntoDatabase(Homework homework) {
-    _databaseHelper.insertHomework(homework)
-      .then((_) {
-        setState(() {});
-        AdMobHelper.showInterstitial();
-      });
+    _databaseHelper.insertHomework(homework);
   }
 
   void _insertTestIntoDatabase(Test test) {
-    _databaseHelper.insertTest(test)
-      .then((_) {
-        setState(() {});
-        AdMobHelper.showInterstitial();
-      });
+    _databaseHelper.insertTest(test);
   }
 
   Widget _buildLessonTile(Lesson lesson) {

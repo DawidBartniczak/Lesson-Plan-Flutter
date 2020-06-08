@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lessonplan/model/localizationHelper.dart';
 
 import '../model/databaseHelper.dart';
-import '../model/admobHelper.dart';
 import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
@@ -19,16 +18,8 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
 
   @override
   void initState() {
-    AdMobHelper.hideBanner();
-    AdMobHelper.loadInterstitial();
     loadData();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    AdMobHelper.showBanner();
-    super.dispose();
   }
 
   void loadData() {
@@ -38,11 +29,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   }
 
   void _insertLessonIntoDatabase(Lesson lesson) {
-    _databaseHelper.insertLesson(lesson)
-      .then((_) {
-        loadData();
-        AdMobHelper.showInterstitial();
-      });
+    _databaseHelper.insertLesson(lesson);
   }
 
   void _showAddLesson(int day) {
