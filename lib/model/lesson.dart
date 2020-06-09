@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 class Lesson {
   static const String ID = 'id';
   static const String SUBJECT = 'subject';
+  static const String SUBJECT_ID = 'subject_id';
   static const String CLASSROOM = 'classroom';
   static const String START_HOUR = 'start_hour';
   static const String START_MINUTE = 'start_minute';
@@ -13,6 +14,7 @@ class Lesson {
 
   int id;
   String subject;
+  int subject_id;
   String classroom;
   int startHour;
   int startMinute;
@@ -24,6 +26,7 @@ class Lesson {
     return {
       ID: id,
       SUBJECT: subject,
+      SUBJECT_ID: subject_id,
       CLASSROOM: classroom,
       START_HOUR: startHour,
       START_MINUTE: startMinute,
@@ -36,6 +39,7 @@ class Lesson {
   Lesson.fromMap(Map<String, dynamic> lessonData) {
     id = lessonData[ID];
     subject = lessonData[SUBJECT];
+    subject_id = lessonData[SUBJECT_ID];
     classroom = lessonData[CLASSROOM];
     startHour = lessonData[START_HOUR];
     startMinute = lessonData[START_MINUTE];
@@ -47,6 +51,7 @@ class Lesson {
   Lesson({
     @required this.id,
     @required this.subject,
+    this.subject_id,
     @required this.classroom,
     @required this.startHour,
     @required this.startMinute,

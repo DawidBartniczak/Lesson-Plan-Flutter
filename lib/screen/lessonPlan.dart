@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../model/databaseHelper.dart';
+import '../provider/lessonProvider.dart';
 import '../model/localizationHelper.dart';
 import '../model/lesson.dart';
 import '../screen/lessonDetails.dart';
@@ -11,20 +12,13 @@ class LessonPlanScreen extends StatefulWidget {
 }
 
 class _LessonPlanScreenState extends State<LessonPlanScreen> {
-  DatabaseHelper _databaseHelper = DatabaseHelper();
-  Future<List<Lesson>> _lessons;
+  LessonProvider _lessonsProvier;
   int day = 1;
 
   @override
   void initState() {
-    loadData();
+    Provider.of<LessonProvider>(context, listen: false).fetchLessons();
     super.initState();
-  }
-
-  void loadData() {
-    setState(() {
-      _lessons = _databaseHelper.getLessonsForDay(day);
-    });
   }
 
   Widget _buildTabletLessonGrid(List<Lesson> lessons) {
@@ -100,8 +94,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
             color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
             onPressed: () {
               if (day != 1)
-                day--;
-                loadData();
+                setState(() => day--);
             },
           ),
           Text(LocalizationHelper.of(context).localize('day_$day')),
@@ -110,8 +103,7 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
             color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
             onPressed: () {
               if (day != 5)
-                day++;
-                loadData();
+                setState(() => day++);
             },
           ),
         ],
@@ -123,28 +115,18 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
   Widget build(BuildContext context) {
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
-    return FutureBuilder(
-      future: _lessons,
-      builder: (_, AsyncSnapshot<List<Lesson>> snapshot) {
-        if (snapshot.hasData) {
-          List<Lesson> lessons = snapshot.data;
+    _lessonsProvier = Provider.of<LessonProvider>(context);
+    List<Lesson> lessons = _lessonsProvier.lessonsForDay(day);
 
-          return Column(
-            children: <Widget>[
-              _buildDayChanger(context),
-              Expanded(
-                child: !_isTablet 
-                  ? _buildPhoneLessonList(lessons)
-                  : _buildTabletLessonGrid(lessons),
-              )
-            ],
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+    return Column(
+      children: <Widget>[
+        _buildDayChanger(context),
+        Expanded(
+          child: !_isTablet 
+            ? _buildPhoneLessonList(lessons)
+            : _buildTabletLessonGrid(lessons),
+        )
+      ],
     );
   }
 }

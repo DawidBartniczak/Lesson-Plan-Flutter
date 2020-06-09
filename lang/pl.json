@@ -1,8 +1,12 @@
 {
     "app_title": "Plan Lekcji",
     "tab_lessonplan": "Plan Lekcji",
-    "tab_homwork": "Zad. Domowe",
+    "tab_homework": "Zad. Domowe",
     "tab_tests": "Sprawdziany",
+    "fab_edit_plan": "Edytuj Plan",
+    "fab_add_homework": "Dodaj Zadanie",
+    "fab_add_test": "Dodaj Sprawdzian",
+    "screen_calendar": "Terminarz",
     "screen_settings": "Ustawienia",
     "settings_theme_header": "Motyw",
     "settings_theme_description": "Zmień motyw aplikacji.",

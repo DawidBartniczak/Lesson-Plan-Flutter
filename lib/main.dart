@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import './model/localizationHelper.dart';
 import './provider/themeModeProvider.dart';
+import './provider/lessonProvider.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
@@ -21,8 +22,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: ThemeModeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: ThemeModeProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: LessonProvider(),
+        ),
+      ],
       child: Consumer<ThemeModeProvider>(
         builder: (_, ThemeModeProvider themeModeProvider, _2) {
           return  MaterialApp(
@@ -38,7 +46,10 @@ class MyApp extends StatelessWidget {
             ),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
-              
+              toggleableActiveColor: Colors.deepPurple[300],
+              accentColor: Colors.deepPurpleAccent[100],
+              primaryColorDark: Colors.grey[900],
+              primaryColorLight: Colors.grey[900],
             ),
             supportedLocales: [
               Locale('en', 'US'),
@@ -76,7 +87,45 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  TabController _tabController;
+  int _index = 0;
+
+  @override
+  void initState() {
+    _tabController = TabController(
+      length: 3,
+      initialIndex: 0,
+      vsync: this,
+    );
+    _tabController.addListener(_updateIndex);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _updateIndex() {
+    if (_index != _tabController.index)
+      setState(() => _index = _tabController.index);
+  }
+
+  String _fabText(LocalizationHelper localizationHelper) {
+    switch (_index) {
+      case 0:
+        return localizationHelper.localize('fab_edit_plan');
+      case 1:
+        return localizationHelper.localize('fab_add_homework');
+      case 2:
+        return localizationHelper.localize('fab_add_test');
+      default:
+        return '';
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     LocalizationHelper localizationHelper = LocalizationHelper.of(context);
@@ -86,32 +135,47 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(localizationHelper.localize('app_title')),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              tooltip: localizationHelper.localize('screen_lessonplaneditor'),
-              onPressed: () => Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME),
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              tooltip: localizationHelper.localize('screen_settings'),
-              onPressed: () => Navigator.of(context).pushNamed(Settings.ROUTE_NAME),
-            ),
-          ],
           bottom: TabBar(
+            controller: _tabController,
             tabs: <Widget>[
               Tab(text: localizationHelper.localize('tab_lessonplan')),
-              Tab(text: localizationHelper.localize('tab_homwork')),
+              Tab(text: localizationHelper.localize('tab_homework')),
               Tab(text: localizationHelper.localize('tab_tests')),
             ],
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: <Widget>[
             LessonPlanScreen(),
             HomeworkScreen(),
             TestScreen()
           ],
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.settings),
+                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                tooltip: localizationHelper.localize('screen_settings'),
+                onPressed: () => Navigator.of(context).pushNamed(Settings.ROUTE_NAME),
+              ),
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                tooltip: 'Calendar',
+                onPressed: () {},
+              )
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(_index == 0 ? Icons.edit : Icons.add),
+          label: Text(_fabText(localizationHelper)),
+          onPressed: () {},
         ),
       ),
     );

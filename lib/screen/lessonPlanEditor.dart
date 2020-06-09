@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:lessonplan/model/localizationHelper.dart';
 
 import '../model/databaseHelper.dart';
+import '../provider/lessonProvider.dart';
 import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
@@ -14,19 +16,8 @@ class LessonPlanEditor extends StatefulWidget {
 
 class _LessonPlanEditorState extends State<LessonPlanEditor> {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  Future<List<Lesson>> _lessons;
-
-  @override
-  void initState() {
-    loadData();
-    super.initState();
-  }
-
-  void loadData() {
-    setState(() {
-      _lessons = _databaseHelper.lessons;
-    });
-  }
+  LessonProvider _lessonProvider;
+  List<Lesson> _lessons;
 
   void _insertLessonIntoDatabase(Lesson lesson) {
     _databaseHelper.insertLesson(lesson);
@@ -95,8 +86,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
           _showDeleteConfirm()
             .then((bool isConfirmed) {
               if (isConfirmed) {
-                _databaseHelper.deleteLesson(lesson.id)
-                  .then((_) => loadData());
+                _databaseHelper.deleteLesson(lesson.id);
               }
             });
         },
@@ -157,22 +147,14 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
 
   @override
   Widget build(BuildContext context) {
+    _lessonProvider = Provider.of<LessonProvider>(context);
+    _lessons = _lessonProvider.lessons;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(LocalizationHelper.of(context).localize('screen_lessonplaneditor')),
       ),
-      body: FutureBuilder(
-        future: _lessons,
-        builder: (_, AsyncSnapshot<List<Lesson>> snapshot) {
-          if (snapshot.hasData) {
-            return _buildLessonsList(snapshot.data);
-          } else {
-            return const Center(
-              child: const CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+      body: _buildLessonsList(_lessons)
     );
   }
 }
