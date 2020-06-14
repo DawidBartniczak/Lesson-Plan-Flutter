@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../provider/lessonProvider.dart';
 import '../model/localizationHelper.dart';
 import '../model/lesson.dart';
-import '../screen/lessonDetails.dart';
 
 class LessonPlanScreen extends StatefulWidget {
   @override
@@ -15,46 +14,37 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
   LessonProvider _lessonsProvier;
   int day = 1;
 
-  @override
-  void initState() {
-    Provider.of<LessonProvider>(context, listen: false).fetchLessons();
-    super.initState();
-  }
-
   Widget _buildTabletLessonGrid(List<Lesson> lessons) {
     return GridView(
       padding: const EdgeInsets.all(24.0),
       children: lessons.map((Lesson lesson) {
         return Card(
-          child: InkWell(
-            onTap: () => Navigator.of(context).pushNamed(LessonDetails.ROUTE_NAME, arguments: lesson),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5.0),
-                        topRight: Radius.circular(5.0),
-                      )
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(lesson.classroom,
-                      style: TextStyle(
-                        fontSize: 45,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    )
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(lesson.classroom,
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text(lesson.subject),
-                  subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
-                )
-              ],
-            ),
+              ),
+              ListTile(
+                title: Text(lesson.subject),
+                subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
+              )
+            ],
           ),
         );
       }).toList(),
@@ -69,15 +59,12 @@ class _LessonPlanScreenState extends State<LessonPlanScreen> {
   Widget _buildPhoneLessonList(List<Lesson> lessons) {
     return ListView(
       children: lessons.map((Lesson lesson) {
-        return InkWell(
-          onTap: () => Navigator.of(context).pushNamed(LessonDetails.ROUTE_NAME, arguments: lesson),
-          child: ListTile(
-            title: Text(lesson.subject),
-            subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
-            leading: CircleAvatar(
-              radius: 24,
-              child: Text(lesson.classroom),
-            ),
+        return ListTile(
+          title: Text(lesson.subject),
+          subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
+          leading: CircleAvatar(
+            radius: 24,
+            child: Text(lesson.classroom),
           ),
         );
       }).toList()

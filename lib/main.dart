@@ -6,12 +6,13 @@ import 'package:provider/provider.dart';
 import './model/localizationHelper.dart';
 import './provider/themeModeProvider.dart';
 import './provider/lessonProvider.dart';
+import './provider/homeworkProvider.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
 import './screen/lessonPlanEditor.dart';
-import './screen/lessonDetails.dart';
+import './screen/addHomework.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: LessonProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: HomeworkProvider(),
+        )
       ],
       child: Consumer<ThemeModeProvider>(
         builder: (_, ThemeModeProvider themeModeProvider, _2) {
@@ -73,7 +77,7 @@ class MyApp extends StatelessWidget {
             routes: {
               Settings.ROUTE_NAME: (_) => Settings(),
               LessonPlanEditor.ROUTE_NAME: (_) => LessonPlanEditor(),
-              LessonDetails.ROUTE_NAME: (_) => LessonDetails()
+              AddHomework.ROUTE_NAME: (_) => AddHomework(),
             },
           );
         }
@@ -93,6 +97,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    Provider.of<LessonProvider>(context, listen: false).fetchLessons()
+      .then((_) => Provider.of<HomeworkProvider>(context, listen: false).fetchHomework());
     _tabController = TabController(
       length: 3,
       initialIndex: 0,
@@ -165,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               IconButton(
                 icon: Icon(Icons.calendar_today),
                 color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                tooltip: 'Calendar',
+                tooltip: localizationHelper.localize('screen_calendar'),
                 onPressed: () {},
               )
             ],
@@ -173,9 +179,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'main',
           icon: Icon(_index == 0 ? Icons.edit : Icons.add),
           label: Text(_fabText(localizationHelper)),
-          onPressed: () {},
+          onPressed: () {
+            switch (_index) {
+              case 0:
+                Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
+                break;
+              case 1:
+                Navigator.of(context).pushNamed(AddHomework.ROUTE_NAME);
+                break;
+            }
+          },
         ),
       ),
     );

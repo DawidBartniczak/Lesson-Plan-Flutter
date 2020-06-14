@@ -14,7 +14,7 @@ class Lesson {
 
   int id;
   String subject;
-  int subject_id;
+  int subjectId;
   String classroom;
   int startHour;
   int startMinute;
@@ -26,7 +26,7 @@ class Lesson {
     return {
       ID: id,
       SUBJECT: subject,
-      SUBJECT_ID: subject_id,
+      SUBJECT_ID: subjectId,
       CLASSROOM: classroom,
       START_HOUR: startHour,
       START_MINUTE: startMinute,
@@ -39,7 +39,7 @@ class Lesson {
   Lesson.fromMap(Map<String, dynamic> lessonData) {
     id = lessonData[ID];
     subject = lessonData[SUBJECT];
-    subject_id = lessonData[SUBJECT_ID];
+    subjectId = lessonData[SUBJECT_ID];
     classroom = lessonData[CLASSROOM];
     startHour = lessonData[START_HOUR];
     startMinute = lessonData[START_MINUTE];
@@ -51,7 +51,7 @@ class Lesson {
   Lesson({
     @required this.id,
     @required this.subject,
-    this.subject_id,
+    this.subjectId,
     @required this.classroom,
     @required this.startHour,
     @required this.startMinute,

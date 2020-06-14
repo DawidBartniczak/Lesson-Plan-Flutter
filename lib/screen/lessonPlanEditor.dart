@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lessonplan/model/localizationHelper.dart';
 
-import '../model/databaseHelper.dart';
 import '../provider/lessonProvider.dart';
 import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
@@ -15,34 +14,23 @@ class LessonPlanEditor extends StatefulWidget {
 }
 
 class _LessonPlanEditorState extends State<LessonPlanEditor> {
-  final DatabaseHelper _databaseHelper = DatabaseHelper();
   LessonProvider _lessonProvider;
   List<Lesson> _lessons;
-
-  void _insertLessonIntoDatabase(Lesson lesson) {
-    _databaseHelper.insertLesson(lesson);
-  }
 
   void _showAddLesson(int day) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) {
-        return AddLessonBottomSheet(
-          _insertLessonIntoDatabase,
-          day
-        );
-      }
+      builder: (_) => AddLessonBottomSheet(day)
     );
   }
 
-  Future<bool> _showDeleteConfirm() {
+  Future<bool> _showDeleteConfirm(_) {
     return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           title: Text(LocalizationHelper.of(context).localize('lesson_remove_title')),
           content: Text(LocalizationHelper.of(context).localize('lesson_remove_message')),
           actions: <Widget>[
@@ -72,24 +60,24 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
   }
 
   Widget _lessonTile(Lesson lesson) {
-    return ListTile(
-      title: Text(lesson.subject),
-      subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
-      leading: CircleAvatar(
-        radius: 24,
-        child: Text(lesson.classroom),
+    return Dismissible(
+      key: ValueKey(lesson.id),
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.all(16),
+        color: Theme.of(context).errorColor,
+        child: Icon(Icons.delete),
       ),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete),
-        color: Colors.red,
-        onPressed: () {
-          _showDeleteConfirm()
-            .then((bool isConfirmed) {
-              if (isConfirmed) {
-                _databaseHelper.deleteLesson(lesson.id);
-              }
-            });
-        },
+      direction: DismissDirection.endToStart,
+      confirmDismiss: _showDeleteConfirm,
+      onDismissed: (_) => _lessonProvider.deleteLesson(lesson.id),
+      child: ListTile(
+        title: Text(lesson.subject),
+        subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
+        leading: CircleAvatar(
+          radius: 24,
+          child: Text(lesson.classroom),
+        ),
       ),
     );
   }

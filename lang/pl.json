@@ -32,6 +32,8 @@
     "test_invaliddate_title": "Zła data!",
     "test_invaliddate_message": "Tej lekcji nie ma w wybranym dniu.",
     "text_selectdate": "Wybierz datę",
+    "text_select_subject": "Wybierz przedmiot:",
+    "text_select_lesson": "Wybierz termin",
     "text_select_hour": "Wybierz godzinę",
     "text_dismiss": "Zamknij",
     "text_select": "Wybierz",

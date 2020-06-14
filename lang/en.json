@@ -33,6 +33,8 @@
     "test_invaliddate_title": "Invald date!",
     "test_invaliddate_message": "This lesson isn't present in selected date.",
     "text_selectdate": "Pick date",
+    "text_select_subject": "Pick subject",
+    "text_select_lesson": "Pick lesson",
     "text_select_hour": "Pick hour",
     "text_dismiss": "Dismiss",
     "text_select": "Pick",
