@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../provider/homeworkProvider.dart';
+import '../provider/lessonProvider.dart';
 import '../model/homework.dart';
 
 class HomeworkScreen extends StatefulWidget {
@@ -12,11 +13,11 @@ class HomeworkScreen extends StatefulWidget {
 
 class _HomeworkScreenState extends State<HomeworkScreen> {
 
-  Widget _buildTistTile(Homework homework) {
+  Widget _buildTistTile(Homework homework, LessonProvider lessonProvider) {
     return Card(
       child: ListTile(
         title: Text(homework.name),
-        subtitle: Text('Subject'),
+        subtitle: Text(lessonProvider.lessonSubjectForId(homework.lessonID)),
         leading: CircleAvatar(
           radius: 24,
           child: Padding(
@@ -41,12 +42,13 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
   @override
   Widget build(BuildContext context) {
     HomeworkProvider homeworkProvider = Provider.of<HomeworkProvider>(context);
+    LessonProvider lessonProvider = Provider.of<LessonProvider>(context, listen: false);
     List<Homework> homework = homeworkProvider.homework;
 
 
     return ListView(
       children: 
-        homework.map((Homework homework) => _buildTistTile(homework)).toList(),
+        homework.map((Homework homework) => _buildTistTile(homework, lessonProvider)).toList(),
     );
   }
 }

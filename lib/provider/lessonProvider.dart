@@ -27,6 +27,7 @@ class LessonProvider extends ChangeNotifier {
   }
 
   List<Lesson> lessonsForDay(int day) => _lessons.where((Lesson lesson) => lesson.day == day).toList();
+  String lessonSubjectForId(int id) => _lessons.firstWhere((Lesson lesson) => lesson.id == id).subject;
 
   Future<void> addLesson(Lesson lesson) async {
     sqflite.Database database = await DatabaseHelper().database;
