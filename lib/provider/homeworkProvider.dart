@@ -30,4 +30,19 @@ class HomeworkProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteHomework(int id) async {
+    Homework _oldHomework = _homework.firstWhere((Homework homework) => homework.id == id);
+    _homework.remove(_oldHomework);
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      await database.delete(Homework.TABLE_NAME, where: '${Homework.ID} = ?', whereArgs: [id]);
+    } catch (error) {
+      _homework.add(_oldHomework);
+      notifyListeners();
+    }
+  }
 }

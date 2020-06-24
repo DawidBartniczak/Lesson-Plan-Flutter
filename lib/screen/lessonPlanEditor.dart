@@ -31,7 +31,7 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(LocalizationHelper.of(context).localize('lesson_remove_title')),
+          title: Text(LocalizationHelper.of(context).localize('text_confirmation')),
           content: Text(LocalizationHelper.of(context).localize('lesson_remove_message')),
           actions: <Widget>[
             FlatButton(
