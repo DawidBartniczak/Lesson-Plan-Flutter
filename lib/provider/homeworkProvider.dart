@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
-import '../model/databaseHelper.dart';
+import '../helper/databaseHelper.dart';
 import '../model/homework.dart';
-import '../model/lesson.dart';
 
 class HomeworkProvider with ChangeNotifier {
   List<Homework> _homework = [];

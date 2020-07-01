@@ -1,0 +1,4 @@
+enum AddBottomSheet {
+  homeworkBottomSheet,
+  testBottomSheet
+}

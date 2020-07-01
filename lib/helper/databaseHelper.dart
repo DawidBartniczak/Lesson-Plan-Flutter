@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import './lesson.dart';
-import './homework.dart';
-import './test.dart';
-import './subject.dart';
+import '../model/lesson.dart';
+import '../model/homework.dart';
+import '../model/test.dart';
+import '../model/subject.dart';
 
 class DatabaseHelper {
   static const DATABASE_NAME = 'lesson_plan.db';

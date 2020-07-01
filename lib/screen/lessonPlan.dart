@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/lessonProvider.dart';
-import '../model/localizationHelper.dart';
+import '../helper/localizationHelper.dart';
 import '../model/lesson.dart';
 
 class LessonPlanScreen extends StatefulWidget {

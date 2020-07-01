@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import '../model/localizationHelper.dart';
+import '../helper/localizationHelper.dart';
 import '../provider/homeworkProvider.dart';
 import '../provider/lessonProvider.dart';
 import '../model/homework.dart';

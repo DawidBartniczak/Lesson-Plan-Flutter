@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../model/localizationHelper.dart';
+import '../helper/localizationHelper.dart';
 import '../provider/themeModeProvider.dart';
 
 class Settings extends StatefulWidget {

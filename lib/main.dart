@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-import './model/localizationHelper.dart';
+import './helper/localizationHelper.dart';
+import './model/addBottomSheet.dart';
 import './provider/themeModeProvider.dart';
 import './provider/lessonProvider.dart';
 import './provider/homeworkProvider.dart';
@@ -12,7 +13,7 @@ import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
 import './screen/lessonPlanEditor.dart';
-import './screen/addHomework.dart';
+import 'screen/subjectChooser.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,7 +78,7 @@ class MyApp extends StatelessWidget {
             routes: {
               Settings.ROUTE_NAME: (_) => Settings(),
               LessonPlanEditor.ROUTE_NAME: (_) => LessonPlanEditor(),
-              AddHomework.ROUTE_NAME: (_) => AddHomework(),
+              SubjectChooser.ROUTE_NAME: (_) => SubjectChooser(),
             },
           );
         }
@@ -188,7 +189,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Navigator.of(context).pushNamed(LessonPlanEditor.ROUTE_NAME);
                 break;
               case 1:
-                Navigator.of(context).pushNamed(AddHomework.ROUTE_NAME);
+                Navigator.of(context).pushNamed(SubjectChooser.ROUTE_NAME, arguments: AddBottomSheet.homeworkBottomSheet);
+                break;
+              case 2:
+                Navigator.of(context).pushNamed(SubjectChooser.ROUTE_NAME, arguments: AddBottomSheet.testBottomSheet);
                 break;
             }
           },

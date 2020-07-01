@@ -4,20 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/localizationHelper.dart';
-import '../../provider/lessonProvider.dart';
+import '../../helper/localizationHelper.dart';
 import '../../model/homework.dart';
-import '../../model/subject.dart';
 import '../../model/lesson.dart';
 
 class AddHomeworkBottomSheet extends StatefulWidget {
-  final Subject _subject;
   final List<Lesson> _lessonsForSubject;
 
   @override
   _AddHomeworkBottomSheetState createState() => _AddHomeworkBottomSheetState();
 
-  AddHomeworkBottomSheet(this._subject, this._lessonsForSubject);
+  AddHomeworkBottomSheet(this._lessonsForSubject);
 }
 
 class _AddHomeworkBottomSheetState extends State<AddHomeworkBottomSheet> {

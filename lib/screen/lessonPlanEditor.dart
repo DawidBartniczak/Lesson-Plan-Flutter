@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lessonplan/model/localizationHelper.dart';
+import 'package:lessonplan/helper/localizationHelper.dart';
 
 import '../provider/lessonProvider.dart';
 import '../model/lesson.dart';

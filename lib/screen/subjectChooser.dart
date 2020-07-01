@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../model/localizationHelper.dart';
+import '../helper/localizationHelper.dart';
 import '../provider/lessonProvider.dart';
 import '../widget/bottomSheet/addHomeworkBottomSheet.dart';
+import '../widget/bottomSheet/addTestBottomSheet.dart';
+import '../model/addBottomSheet.dart';
 import '../model/subject.dart';
 import '../model/lesson.dart';
 
-class AddHomework extends StatefulWidget {
-  static const ROUTE_NAME = 'add_homework';
+class SubjectChooser extends StatefulWidget {
+  static const ROUTE_NAME = 'subject_chooser';
 
   @override
-  _AddHomeworkState createState() => _AddHomeworkState();
+  _SubjectChooserState createState() => _SubjectChooserState();
 }
 
-class _AddHomeworkState extends State<AddHomework> {
+class _SubjectChooserState extends State<SubjectChooser> {
+  AddBottomSheet _addBottomSheet;
   LocalizationHelper localizationHelper;
 
-  void _showAddHomework(Subject subject, List<Lesson> lessonsForSubject) {
+  void _showAddHomework(List<Lesson> lessonsForSubject) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) => AddHomeworkBottomSheet(subject, lessonsForSubject)
+      builder: (_) => _addBottomSheet == AddBottomSheet.homeworkBottomSheet
+        ? AddHomeworkBottomSheet(lessonsForSubject)
+        : AddTestBottomSheet(lessonsForSubject)
     ).then((value) {
       if (value == true)
         Navigator.of(context).pop();
@@ -33,7 +38,7 @@ class _AddHomeworkState extends State<AddHomework> {
     String days = daysList.join(', ');
 
     return InkWell(
-      onTap: () => _showAddHomework(subject, lessonsForSubject),
+      onTap: () => _showAddHomework(lessonsForSubject),
       radius: 4.0,
       child: ListTile(
         title: Text(subject.subject),
@@ -44,6 +49,7 @@ class _AddHomeworkState extends State<AddHomework> {
 
   @override
   Widget build(BuildContext context) {
+    _addBottomSheet = ModalRoute.of(context).settings.arguments;
     localizationHelper = LocalizationHelper.of(context);
     LessonProvider lessonProvider = Provider.of<LessonProvider>(context, listen: false);
 
