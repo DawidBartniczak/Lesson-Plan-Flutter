@@ -7,15 +7,11 @@ import '../provider/homeworkProvider.dart';
 import '../provider/lessonProvider.dart';
 import '../model/homework.dart';
 
-class HomeworkScreen extends StatefulWidget {
-  @override
-  _HomeworkScreenState createState() => _HomeworkScreenState();
-}
-
-class _HomeworkScreenState extends State<HomeworkScreen> {
+class HomeworkScreen extends StatelessWidget {
   HomeworkProvider _homeworkProvider;
+  LessonProvider _lessonProvider;
 
-  Future<bool> _showDeleteConfirm(_) {
+  Future<bool> _showDeleteConfirm(BuildContext context) {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -39,7 +35,7 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
     );
   }
 
-  Widget _buildTistTile(Homework homework, LessonProvider lessonProvider) {
+  Widget _buildTistTile(Homework homework, BuildContext context) {
     return Dismissible(
       key: ValueKey(homework.id),
       background: Container(
@@ -49,11 +45,11 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
         child: Icon(Icons.delete),
       ),
       direction: DismissDirection.endToStart,
-      confirmDismiss: _showDeleteConfirm,
+      confirmDismiss: (_) => _showDeleteConfirm(context),
       onDismissed: (_) => _homeworkProvider.deleteHomework(homework.id),
       child: ListTile(
         title: Text(homework.name),
-        subtitle: Text(lessonProvider.lessonSubjectForId(homework.lessonID)),
+        subtitle: Text(_lessonProvider.lessonSubjectForId(homework.lessonID)),
         leading: CircleAvatar(
           radius: 24,
           child: Padding(
@@ -78,13 +74,12 @@ class _HomeworkScreenState extends State<HomeworkScreen> {
   @override
   Widget build(BuildContext context) {
     _homeworkProvider = Provider.of<HomeworkProvider>(context);
-    LessonProvider lessonProvider = Provider.of<LessonProvider>(context, listen: false);
+    _lessonProvider = Provider.of<LessonProvider>(context);
     List<Homework> homework = _homeworkProvider.homework;
-
 
     return ListView(
       children: 
-        homework.map((Homework homework) => _buildTistTile(homework, lessonProvider)).toList(),
+        homework.map((Homework homework) => _buildTistTile(homework, context)).toList(),
     );
   }
 }

@@ -8,6 +8,7 @@ import './model/addBottomSheet.dart';
 import './provider/themeModeProvider.dart';
 import './provider/lessonProvider.dart';
 import './provider/homeworkProvider.dart';
+import './provider/testProvider.dart';
 import './screen/lessonPlan.dart';
 import './screen/homework.dart';
 import './screen/test.dart';
@@ -34,7 +35,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: HomeworkProvider(),
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: TestProvider(),
+        ),
       ],
       child: Consumer<ThemeModeProvider>(
         builder: (_, ThemeModeProvider themeModeProvider, _2) {
@@ -99,7 +103,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     Provider.of<LessonProvider>(context, listen: false).fetchLessons()
-      .then((_) => Provider.of<HomeworkProvider>(context, listen: false).fetchHomework());
+      .then((_) => Provider.of<HomeworkProvider>(context, listen: false).fetchHomework())
+      .then((_) => Provider.of<TestProvider>(context, listen: false).fetchTests());
     _tabController = TabController(
       length: 3,
       initialIndex: 0,
