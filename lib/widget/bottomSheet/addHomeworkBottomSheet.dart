@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lessonplan/provider/homeworkProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:intl/intl.dart';
 
+import '../../provider/homeworkProvider.dart';
 import '../../helper/localizationHelper.dart';
 import '../../model/homework.dart';
 import '../../model/lesson.dart';

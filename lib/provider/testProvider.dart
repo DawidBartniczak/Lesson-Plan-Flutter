@@ -20,4 +20,13 @@ class TestProvider with ChangeNotifier {
     
     notifyListeners();
   }
+
+  Future<void> addTest(Test test) async {
+    sqflite.Database database = await DatabaseHelper().database;
+
+    test.id = await database.insert(Test.TABLE_NAME, test.toMap());
+    _tests.add(test);
+
+    notifyListeners();
+  }
 }

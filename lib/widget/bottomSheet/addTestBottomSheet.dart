@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:select_dialog/select_dialog.dart';
 
+import '../../provider/testProvider.dart';
 import '../../helper/localizationHelper.dart';
 import '../../model/test.dart';
 import '../../model/lesson.dart';
@@ -117,7 +119,18 @@ class _AddTestBottomSheetState extends State<AddTestBottomSheet> {
                   color: Theme.of(context).accentColor,
                   textColor: Colors.white,
                   child: Text(localizationHelper.localize('text_save')),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_testFormKey.currentState.validate() && _datePicked) {
+                      _testFormKey.currentState.save();
+                      Test test = Test(
+                        name: _testContent,
+                        lessonID: _ids[_selectedDateString],
+                        date: _possibleDates[_selectedDateString],
+                      );
+                      Provider.of<TestProvider>(context, listen: false).addTest(test)
+                        .then((_) => Navigator.of(context).pop(true));
+                    }
+                  },
                 )
               ],
             ),
