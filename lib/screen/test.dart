@@ -13,12 +13,8 @@ class TestScreen extends StatelessWidget {
     _testProvider = Provider.of<TestProvider>(context);
     List<Test> tests = _testProvider.tests;
 
-    return tests.length > 0
-      ? ListView(
-        children: tests.map((Test test) => TestListTile(test)).toList(),
-      )
-      : Center(
-        child: Text('Brak sprawdzianów.'),
-      );
+    return ListView(
+      children: tests.map((Test test) => TestListTile(test)).toList(),
+    );
   }
 }

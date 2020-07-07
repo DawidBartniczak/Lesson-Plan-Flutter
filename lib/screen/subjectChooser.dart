@@ -46,7 +46,11 @@ class _SubjectChooserState extends State<SubjectChooser> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizationHelper.localize('fab_add_homework')),
+        title: Text(
+          _addBottomSheet == AddBottomSheet.homeworkBottomSheet
+            ? localizationHelper.localize('fab_add_homework')
+            : localizationHelper.localize('fab_add_test')
+        ),
       ),
       body: Column(
         children: <Widget>[
