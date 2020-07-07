@@ -29,4 +29,19 @@ class TestProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteTest(int id) async {
+    Test _oldTest = _tests.firstWhere((Test test) => test.id == id);
+    _tests.remove(_oldTest);
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      await database.delete(Test.TABLE_NAME, where: '${Test.ID} = ?', whereArgs: [id]);
+    } catch (error) {
+      _tests.add(_oldTest);
+      notifyListeners();
+    }
+  }
 }

@@ -46,6 +46,7 @@ class TestScreen extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) => _showDeleteConfirm(context),
+      onDismissed: (_) => _testProvider.deleteTest(test.id),
       child: ListTile(
         title: Text(test.name),
         subtitle: Text(_lessonProvider.lessonSubjectForId(test.lessonID)),
