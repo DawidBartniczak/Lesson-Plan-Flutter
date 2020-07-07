@@ -31,6 +31,7 @@
     "text_confirmation": "Confirmation",
     "text_test_add": "Add new test",
     "text_test_subject": "Test's subject",
+    "test_remove_message": "Do you want to remove this test?",
     "test_invaliddate_title": "Invald date!",
     "test_invaliddate_message": "This lesson isn't present in selected date.",
     "text_selectdate": "Pick date",

@@ -77,9 +77,13 @@ class HomeworkScreen extends StatelessWidget {
     _lessonProvider = Provider.of<LessonProvider>(context);
     List<Homework> homework = _homeworkProvider.homework;
 
-    return ListView(
-      children: 
-        homework.map((Homework homework) => _buildTistTile(homework, context)).toList(),
-    );
+    return homework.length > 0
+      ? ListView(
+        children: 
+          homework.map((Homework homework) => _buildTistTile(homework, context)).toList(),
+      )
+      : Center(
+        child: Text('Brak zadań domowych.'),
+      );
   }
 }

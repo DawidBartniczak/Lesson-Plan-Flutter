@@ -30,6 +30,7 @@
     "text_confirmation": "Potwierdzenie",
     "text_test_add": "Dodaj sprawdzian",
     "text_test_subject": "Temat do sprawdzianu",
+    "test_remove_message": "Czy na pewno chcesz usunąć ten sprawdzian?",
     "test_invaliddate_title": "Zła data!",
     "test_invaliddate_message": "Tej lekcji nie ma w wybranym dniu.",
     "text_selectdate": "Wybierz datę",
