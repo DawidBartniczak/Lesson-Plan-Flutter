@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../helper/localizationHelper.dart';
 import '../provider/lessonProvider.dart';
+import '../widget/chooseSubjectLabel.dart';
+import '../widget/subjectListTile.dart';
 import '../widget/bottomSheet/addHomeworkBottomSheet.dart';
 import '../widget/bottomSheet/addTestBottomSheet.dart';
 import '../model/addBottomSheet.dart';
@@ -20,7 +22,7 @@ class _SubjectChooserState extends State<SubjectChooser> {
   AddBottomSheet _addBottomSheet;
   LocalizationHelper localizationHelper;
 
-  void _showAddHomework(List<Lesson> lessonsForSubject) {
+  void _showAddBottomSheet(List<Lesson> lessonsForSubject) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -31,20 +33,6 @@ class _SubjectChooserState extends State<SubjectChooser> {
       if (value == true)
         Navigator.of(context).pop();
     });
-  }
-
-  Widget _buildListTile(Subject subject, List<Lesson> lessonsForSubject) {
-    List<String> daysList = lessonsForSubject.map((Lesson lesson) => localizationHelper.localize('day_${lesson.day}')).toList();
-    String days = daysList.join(', ');
-
-    return InkWell(
-      onTap: () => _showAddHomework(lessonsForSubject),
-      radius: 4.0,
-      child: ListTile(
-        title: Text(subject.subject),
-        subtitle: Text(days),
-      ),
-    );
   }
 
   @override
@@ -62,18 +50,7 @@ class _SubjectChooserState extends State<SubjectChooser> {
       ),
       body: Column(
         children: <Widget>[
-          Card(
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.fromLTRB(16.0, 12.0, 0.0, 12.0),
-              child: Text(
-                localizationHelper.localize('text_select_subject'),
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-          ),
+          ChooseSubjectLabel(),
           Expanded(
             child: ListView.builder(
               itemCount: subjects.length,
@@ -81,7 +58,7 @@ class _SubjectChooserState extends State<SubjectChooser> {
                 Subject subject = subjects.elementAt(index);
                 List<Lesson> lessonsForSubject = lessons.where((Lesson lesson) => lesson.subjectId == subject.id).toList();
 
-                return _buildListTile(subject, lessonsForSubject);
+                return SubjectListTile(subject, lessonsForSubject, _showAddBottomSheet);
               },
             ),
           ),

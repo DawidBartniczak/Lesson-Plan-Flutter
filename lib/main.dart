@@ -174,12 +174,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 tooltip: localizationHelper.localize('screen_settings'),
                 onPressed: () => Navigator.of(context).pushNamed(Settings.ROUTE_NAME),
               ),
-              IconButton(
-                icon: Icon(Icons.calendar_today),
-                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                tooltip: localizationHelper.localize('screen_calendar'),
-                onPressed: () {},
-              )
+              // IconButton(
+              //   icon: Icon(Icons.calendar_today),
+              //   color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+              //   tooltip: localizationHelper.localize('screen_calendar'),
+              //   onPressed: () {},
+              // )
             ],
           ),
         ),

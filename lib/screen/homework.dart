@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/homeworkProvider.dart';
 import '../model/homework.dart';
-import '../widget/testListTile.dart';
+import '../widget/homeworkListTile.dart';
 
 class HomeworkScreen extends StatelessWidget {
   @override

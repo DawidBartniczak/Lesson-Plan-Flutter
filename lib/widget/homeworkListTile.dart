@@ -3,12 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../helper/localizationHelper.dart';
-import '../provider/testProvider.dart';
+import '../provider/homeworkProvider.dart';
 import '../provider/lessonProvider.dart';
-import '../model/test.dart';
+import '../model/homework.dart';
 
 class TestListTile extends StatelessWidget {
-  final Test _test;
 
   Future<bool> _showDeleteConfirm(BuildContext context) {
     return showDialog(
@@ -17,7 +16,7 @@ class TestListTile extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(LocalizationHelper.of(context).localize('text_confirmation')),
-          content: Text(LocalizationHelper.of(context).localize('test_remove_message')),
+          content: Text(LocalizationHelper.of(context).localize('homework_remove_message')),
           actions: <Widget>[
             FlatButton(
               child: Text(LocalizationHelper.of(context).localize('text_no')),
@@ -26,7 +25,7 @@ class TestListTile extends StatelessWidget {
             FlatButton(
               child: Text(LocalizationHelper.of(context).localize('text_yes')),
               textColor: Colors.red,
-              onPressed: () => Navigator.of(context).pop(true), 
+              onPressed: () => Navigator.of(context).pop(true),
             )
           ],
         );
@@ -36,11 +35,12 @@ class TestListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TestProvider _testProvider = Provider.of<TestProvider>(context, listen: false);
+    Homework homework = Provider.of<Homework>(context, listen: false);
+    HomeworkProvider _homeworkProvider = Provider.of<HomeworkProvider>(context, listen: false);
     LessonProvider _lessonProvider = Provider.of<LessonProvider>(context, listen: false);
 
     return Dismissible(
-      key: ValueKey(_test.id),
+      key: ValueKey(homework.id),
       background: Container(
         alignment: Alignment.centerRight,
         padding: EdgeInsets.all(16),
@@ -49,23 +49,30 @@ class TestListTile extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) => _showDeleteConfirm(context),
-      onDismissed: (_) => _testProvider.deleteTest(_test.id),
+      onDismissed: (_) => _homeworkProvider.deleteHomework(homework.id),
       child: ListTile(
-        title: Text(_test.name),
-        subtitle: Text(_lessonProvider.lessonSubjectForId(_test.lessonID)),
+        title: Text(homework.name),
+        subtitle: Text(_lessonProvider.lessonSubjectForId(homework.lessonID)),
         leading: CircleAvatar(
           radius: 24,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(DateFormat('dd.MM').format(_test.date)),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(DateFormat('dd.MM').format(homework.date)),
             ),
           ),
+        ),
+        trailing: Consumer<Homework>(
+          builder: (BuildContext context, Homework homework, _) {
+            return IconButton(
+              icon: const Icon(Icons.check),
+              color: !homework.isDone ? Colors.grey : Colors.green,
+              onPressed: homework.changeIsDone,
+            );
+          },
         ),
       ),
     );
   }
-
-  TestListTile(this._test);
 }
