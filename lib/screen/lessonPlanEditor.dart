@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:lessonplan/helper/localizationHelper.dart';
 
 import '../provider/lessonProvider.dart';
+import '../provider/homeworkProvider.dart';
+import '../provider/testProvider.dart';
 import '../model/lesson.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
@@ -70,7 +72,11 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: _showDeleteConfirm,
-      onDismissed: (_) => _lessonProvider.deleteLesson(lesson.id),
+      onDismissed: (_) {
+        _lessonProvider.deleteLesson(lesson.id);
+        Provider.of<HomeworkProvider>(context, listen: false).deleteHomeworkForLesson(lesson.id);
+        Provider.of<TestProvider>(context, listen: false).deleteTestsForLesson(lesson.id);
+      },
       child: ListTile(
         title: Text(lesson.subject),
         subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),

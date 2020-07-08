@@ -44,4 +44,10 @@ class HomeworkProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteHomeworkForLesson(int lessonId) {
+    _homework.removeWhere((Homework homework) => homework.lessonID == lessonId);
+
+    notifyListeners();
+  }
 }

@@ -44,4 +44,10 @@ class TestProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteTestsForLesson(int lessonId) {
+    _tests.removeWhere((Test test) => test.lessonID == lessonId);
+
+    notifyListeners();
+  }
 }
