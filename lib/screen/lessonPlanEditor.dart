@@ -6,7 +6,9 @@ import '../provider/lessonProvider.dart';
 import '../provider/homeworkProvider.dart';
 import '../provider/testProvider.dart';
 import '../model/lesson.dart';
+import '../model/bottomMenuAction.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
+import '../widget/bottomMenuButton.dart';
 
 class LessonPlanEditor extends StatefulWidget {
   static const ROUTE_NAME = 'lessonPlanEditor';
@@ -83,6 +85,29 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
         leading: CircleAvatar(
           radius: 24,
           child: Text(lesson.classroom),
+        ),
+        trailing: BottomMenuButton(
+          context: context,
+          actions: [
+            BottomMenuAction(
+              name: 'Delete',
+              icon: Icon(Icons.delete),
+              value: 1
+            ),
+            BottomMenuAction(
+              name: 'Edit',
+              icon: Icon(Icons.edit),
+              value: 2
+            ),
+            BottomMenuAction(
+              name: 'Details',
+              icon: Icon(Icons.info),
+              value: 3
+            ),
+          ],
+          onSelected: (value) {
+            print('Selected: $value');
+          },
         ),
       ),
     );
