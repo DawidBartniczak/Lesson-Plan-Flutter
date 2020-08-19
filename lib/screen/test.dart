@@ -6,15 +6,19 @@ import '../model/test.dart';
 import '../widget/testListTile.dart';
 
 class TestScreen extends StatelessWidget {
-  TestProvider _testProvider;
-
   @override
   Widget build(BuildContext context) {
-    _testProvider = Provider.of<TestProvider>(context);
-    List<Test> tests = _testProvider.tests;
+    TestProvider testProvider = Provider.of<TestProvider>(context);
+    List<Test> tests = testProvider.tests;
 
     return ListView(
-      children: tests.map((Test test) => TestListTile(test)).toList(),
+      children: 
+        tests.map((Test test) => 
+          ChangeNotifierProvider.value(
+            value: test,
+            child: TestListTile(),
+          )
+        ).toList(),
     );
   }
 }

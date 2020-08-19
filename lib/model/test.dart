@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 
-class Test {
+import '../helper/databaseHelper.dart';
+
+class Test with ChangeNotifier {
   static const String ID = 'id';
   static const String LESSON_ID = 'lesson_id';
   static const String NAME = 'name';
@@ -26,6 +29,28 @@ class Test {
     lessonID = lessonData[LESSON_ID];
     name = lessonData[NAME];
     date = DateTime.parse(lessonData[DATE]);
+  }
+
+  Future<void> changeName(String newName) async {
+    String _oldValue = this.name;
+    this.name = newName;
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      database.update(
+        TABLE_NAME,
+        {
+          NAME: this.name,
+        },
+        where: '$ID = ?',
+        whereArgs: [this.id]
+      );
+    } catch (error) {
+      this.name = _oldValue;
+      notifyListeners();
+    }
   }
 
   Test({

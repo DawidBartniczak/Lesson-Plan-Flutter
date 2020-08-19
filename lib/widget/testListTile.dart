@@ -10,8 +10,6 @@ import '../model/bottomMenuAction.dart';
 import '../widget/bottomMenuButton.dart';
 
 class TestListTile extends StatelessWidget {
-  final Test _test;
-
   Future<bool> _showDeleteConfirm(BuildContext context) {
     return showDialog(
       context: context,
@@ -85,18 +83,19 @@ class TestListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Test test = Provider.of<Test>(context);
     LessonProvider _lessonProvider = Provider.of<LessonProvider>(context, listen: false);
 
     return ListTile(
-      title: Text(_test.name),
-      subtitle: Text(_lessonProvider.lessonSubjectForId(_test.lessonID)),
+      title: Text(test.name),
+      subtitle: Text(_lessonProvider.lessonSubjectForId(test.lessonID)),
       leading: CircleAvatar(
         radius: 24,
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Text(DateFormat('dd.MM').format(_test.date)),
+            child: Text(DateFormat('dd.MM').format(test.date)),
           ),
         ),
       ),
@@ -118,16 +117,14 @@ class TestListTile extends StatelessWidget {
         onSelected: (value) {
           switch (value) {
             case 1:
-              _removeTest(context, _test);
+              _removeTest(context, test);
               break;
             case 2:
-              _showEditTest(context, _test);
+              _showEditTest(context, test);
               break;
           }
         },
       )
     );
   }
-
-  TestListTile(this._test);
 }
