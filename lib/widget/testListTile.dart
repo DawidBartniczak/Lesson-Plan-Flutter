@@ -70,7 +70,7 @@ class TestListTile extends StatelessWidget {
               child: Text(LocalizationHelper.of(context).localize('text_save')),
               onPressed: () {
                 if (_contentController.text != "" && _contentController.text != test.name) {
-                  //test.changeName(_contentController.text);
+                  test.changeName(_contentController.text);
                   Navigator.of(context).pop();
                 }
               },
