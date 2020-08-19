@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../model/localizationHelper.dart';
+import '../helper/localizationHelper.dart';
 import '../provider/themeModeProvider.dart';
-import '../model/admobHelper.dart';
 
 class Settings extends StatefulWidget {
   static const ROUTE_NAME = 'settings';
@@ -15,19 +12,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
-  @override
-  void initState() {
-    AdMobHelper.hideBanner();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    AdMobHelper.showBanner();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

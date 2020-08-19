@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 
-class Homework {
+import '../helper/databaseHelper.dart';
+
+class Homework with ChangeNotifier {
   static const String ID = 'id';
   static const String LESSON_ID = 'lesson_id';
   static const String NAME = 'name';
@@ -30,6 +33,50 @@ class Homework {
     name = lessonData[NAME];
     isDone = lessonData[IS_DONE] == 0 ? false : true;
     date = DateTime.parse(lessonData[DATE]);
+  }
+
+  Future<void> changeName(String newName) async {
+    String _oldValue = this.name;
+    this.name = newName;
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      database.update(
+        TABLE_NAME,
+        {
+          NAME: this.name,
+        },
+        where: '$ID = ?',
+        whereArgs: [this.id]
+      );
+    } catch (error) {
+      this.name = _oldValue;
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeIsDone() async {
+    bool _oldValue = this.isDone;
+    this.isDone = !this.isDone;
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      database.update(
+        TABLE_NAME,
+        {
+          IS_DONE: this.isDone ? 1 : 0,
+        },
+        where: '$ID = ?',
+        whereArgs: [this.id]
+      );
+    } catch (error) {
+      this.isDone = _oldValue;
+      notifyListeners();
+    }
   }
 
   Homework({

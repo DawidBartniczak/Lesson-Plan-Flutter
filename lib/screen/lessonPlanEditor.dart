@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lessonplan/model/localizationHelper.dart';
+import 'package:provider/provider.dart';
 
-import '../model/databaseHelper.dart';
-import '../model/admobHelper.dart';
+import '../helper/localizationHelper.dart';
+import '../provider/lessonProvider.dart';
 import '../model/lesson.dart';
+import '../widget/lessonEditorListTile.dart';
 import '../widget/bottomSheet/addLessonBottomSheet.dart';
 
 class LessonPlanEditor extends StatefulWidget {
@@ -14,72 +15,14 @@ class LessonPlanEditor extends StatefulWidget {
 }
 
 class _LessonPlanEditorState extends State<LessonPlanEditor> {
-  final DatabaseHelper _databaseHelper = DatabaseHelper();
-  Future<List<Lesson>> _lessons;
-
-  @override
-  void initState() {
-    AdMobHelper.hideBanner();
-    AdMobHelper.loadInterstitial();
-    loadData();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    AdMobHelper.showBanner();
-    super.dispose();
-  }
-
-  void loadData() {
-    setState(() {
-      _lessons = _databaseHelper.lessons;
-    });
-  }
-
-  void _insertLessonIntoDatabase(Lesson lesson) {
-    _databaseHelper.insertLesson(lesson)
-      .then((_) {
-        loadData();
-        AdMobHelper.showInterstitial();
-      });
-  }
+  LessonProvider _lessonProvider;
+  List<Lesson> _lessons;
 
   void _showAddLesson(int day) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) {
-        return AddLessonBottomSheet(
-          _insertLessonIntoDatabase,
-          day
-        );
-      }
-    );
-  }
-
-  Future<bool> _showDeleteConfirm() {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          title: Text(LocalizationHelper.of(context).localize('lesson_remove_title')),
-          content: Text(LocalizationHelper.of(context).localize('lesson_remove_message')),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(LocalizationHelper.of(context).localize('text_no')),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            FlatButton(
-              child: Text(LocalizationHelper.of(context).localize('text_yes')),
-              textColor: Colors.red,
-              onPressed: () => Navigator.of(context).pop(true),
-            )
-          ],
-        );
-      }
+      builder: (_) => AddLessonBottomSheet(day)
     );
   }
 
@@ -93,35 +36,11 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
     );
   }
 
-  Widget _lessonTile(Lesson lesson) {
-    return ListTile(
-      title: Text(lesson.subject),
-      subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
-      leading: CircleAvatar(
-        radius: 24,
-        child: Text(lesson.classroom),
-      ),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete),
-        color: Colors.red,
-        onPressed: () {
-          _showDeleteConfirm()
-            .then((bool isConfirmed) {
-              if (isConfirmed) {
-                _databaseHelper.deleteLesson(lesson.id)
-                  .then((_) => loadData());
-              }
-            });
-        },
-      ),
-    );
-  }
-
   List<Widget> _lessonsForDay(int day, List<Lesson> lessons) {
     return lessons
       .where((Lesson lesson) => lesson.day == day)
       .map((Lesson lesson) {
-        return _lessonTile(lesson);
+        return LessonEditorListTile(lesson);
       })
       .toList();
   }
@@ -170,22 +89,14 @@ class _LessonPlanEditorState extends State<LessonPlanEditor> {
 
   @override
   Widget build(BuildContext context) {
+    _lessonProvider = Provider.of<LessonProvider>(context);
+    _lessons = _lessonProvider.lessons;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(LocalizationHelper.of(context).localize('screen_lessonplaneditor')),
       ),
-      body: FutureBuilder(
-        future: _lessons,
-        builder: (_, AsyncSnapshot<List<Lesson>> snapshot) {
-          if (snapshot.hasData) {
-            return _buildLessonsList(snapshot.data);
-          } else {
-            return const Center(
-              child: const CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+      body: _buildLessonsList(_lessons)
     );
   }
 }

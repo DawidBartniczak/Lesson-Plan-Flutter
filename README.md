@@ -10,5 +10,7 @@ Lesson Plan is an opensource app that allows students to have their lesson plan 
 * Libraries: 
   - flutter
   - sqflite
+  - provider
   - shared_preferences
-  - rounded_modal
+  - select_dialog
+  - intl
