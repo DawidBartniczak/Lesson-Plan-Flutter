@@ -113,6 +113,7 @@ class TestListTile extends StatelessWidget {
             value: 2
           ),
         ],
+        tooltip: LocalizationHelper.of(context).localize('text_more'),
         closeLabel: LocalizationHelper.of(context).localize('text_close'),
         onSelected: (value) {
           switch (value) {

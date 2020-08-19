@@ -5,6 +5,7 @@ class BottomMenuButton extends StatelessWidget {
   final BuildContext context;
   final List<BottomMenuAction> actions;
   final Function(dynamic) onSelected;
+  final String tooltip;
   final String closeLabel;
 
   void _showBottomMenu() {
@@ -42,7 +43,7 @@ class BottomMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.more_vert),
-      tooltip: 'More',
+      tooltip: tooltip,
       color: Colors.grey,
       onPressed: _showBottomMenu,
     );
@@ -52,6 +53,7 @@ class BottomMenuButton extends StatelessWidget {
     @required this.context,
     @required this.actions,
     @required this.onSelected,
+    this.tooltip = 'More',
     this.closeLabel = 'Close'
   });
 }

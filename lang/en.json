@@ -49,6 +49,7 @@
     "text_edit": "Edit",
     "text_close": "Close",
     "text_cancel": "Cancel",
+    "text_more": "More",
     "error_fieldempty": "This field can't be empty",
     "error_subjectempty": "Subject can't be empty",
     "error_contentempty": "Content can't be empty",

@@ -64,6 +64,7 @@ class LessonEditorListTile extends StatelessWidget {
             value: 1
           ),
         ],
+        tooltip: LocalizationHelper.of(context).localize('text_more'),
         closeLabel: LocalizationHelper.of(context).localize('text_close'),
         onSelected: (value) {
           switch (value) {
