@@ -14,7 +14,7 @@ import './screen/homework.dart';
 import './screen/test.dart';
 import './screen/settings.dart';
 import './screen/lessonPlanEditor.dart';
-import 'screen/subjectChooser.dart';
+import './screen/subjectChooser.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

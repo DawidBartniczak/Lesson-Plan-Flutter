@@ -35,6 +35,28 @@ class Homework with ChangeNotifier {
     date = DateTime.parse(lessonData[DATE]);
   }
 
+  Future<void> changeName(String newName) async {
+    String _oldValue = this.name;
+    this.name = newName;
+    notifyListeners();
+
+    sqflite.Database database = await DatabaseHelper().database;
+
+    try {
+      database.update(
+        TABLE_NAME,
+        {
+          NAME: this.name,
+        },
+        where: '$ID = ?',
+        whereArgs: [this.id]
+      );
+    } catch (error) {
+      this.name = _oldValue;
+      notifyListeners();
+    }
+  }
+
   Future<void> changeIsDone() async {
     bool _oldValue = this.isDone;
     this.isDone = !this.isDone;

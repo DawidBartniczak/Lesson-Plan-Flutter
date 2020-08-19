@@ -5,6 +5,7 @@ class BottomMenuButton extends StatelessWidget {
   final BuildContext context;
   final List<BottomMenuAction> actions;
   final Function(dynamic) onSelected;
+  final String closeLabel;
 
   void _showBottomMenu() {
     showModalBottomSheet(
@@ -25,7 +26,7 @@ class BottomMenuButton extends StatelessWidget {
               Divider(height: 1),
               InkWell(
                 child: ListTile(
-                  title: Text('Close'),
+                  title: Text(closeLabel),
                   leading: Icon(Icons.close),
                   onTap: () => Navigator.of(context).pop(null),
                 )
@@ -51,5 +52,6 @@ class BottomMenuButton extends StatelessWidget {
     @required this.context,
     @required this.actions,
     @required this.onSelected,
+    this.closeLabel = 'Close'
   });
 }
