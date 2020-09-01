@@ -48,9 +48,14 @@ class LessonEditorListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String _startHour = _lesson.startHour < 10 ? "0${_lesson.startHour}" : _lesson.startHour.toString();
+    String _startMinute = _lesson.startMinute < 10 ? "0${_lesson.startMinute}" : _lesson.startMinute.toString();
+    String _endHour = _lesson.endHour < 10 ? "0${_lesson.endHour}" : _lesson.endHour.toString();
+    String _endMinute = _lesson.endMinute < 10 ? "0${_lesson.endMinute}" : _lesson.endMinute.toString();
+      
     return ListTile(
       title: Text(_lesson.subject),
-      subtitle: Text('${_lesson.startHour}:${_lesson.startMinute} - ${_lesson.endHour}:${_lesson.endMinute}'),
+      subtitle: Text('$_startHour:$_startMinute - $_endHour:$_endMinute'),
       leading: CircleAvatar(
         radius: 24,
         child: Text(_lesson.classroom),

@@ -15,9 +15,14 @@ class LessonList extends StatelessWidget {
 
     return ListView(
       children: _lessonsForDay.map((Lesson lesson) {
+        String _startHour = lesson.startHour < 10 ? "0${lesson.startHour}" : lesson.startHour.toString();
+        String _startMinute = lesson.startMinute < 10 ? "0${lesson.startMinute}" : lesson.startMinute.toString();
+        String _endHour = lesson.endHour < 10 ? "0${lesson.endHour}" : lesson.endHour.toString();
+        String _endMinute = lesson.endMinute < 10 ? "0${lesson.endMinute}" : lesson.endMinute.toString();
+
         return ListTile(
           title: Text(lesson.subject),
-          subtitle: Text('${lesson.startHour}:${lesson.startMinute} - ${lesson.endHour}:${lesson.endMinute}'),
+          subtitle: Text('$_startHour:$_startMinute - $_endHour:$_endMinute'),
           leading: CircleAvatar(
             radius: 24,
             child: Text(lesson.classroom),

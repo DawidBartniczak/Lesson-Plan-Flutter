@@ -54,6 +54,14 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
     LocalizationHelper localizationHelper = LocalizationHelper.of(context);
     bool _isTablet = MediaQuery.of(context).size.width > 600;
 
+    String startHour, startMinute, endHour, endMinute;
+    if (_timePicked) {
+      startHour = _startTime.hour < 10 ? "0${_startTime.hour}" : _startTime.hour.toString();
+      startMinute = _startTime.minute < 10 ? "0${_startTime.minute}" : _startTime.minute.toString();
+      endHour = _endTime.hour < 10 ? "0${_endTime.hour}" : _endTime.hour.toString();
+      endMinute = _endTime.minute < 10 ? "0${_endTime.minute}" : _endTime.minute.toString();
+    }
+
     return SafeArea(
       child: Padding(
         padding: MediaQuery.of(context).viewInsets,
@@ -93,7 +101,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                   children: <Widget>[
                     Text(!_timePicked 
                       ? localizationHelper.localize('text_select_hour')
-                      : '${_startTime.hour}:${_startTime.minute} - ${_endTime.hour}:${_endTime.minute}'),
+                      : '$startHour:$startMinute - $endHour:$endMinute'),
                     FlatButton(
                       child: Text(localizationHelper.localize('text_select')),
                       onPressed: pickStartDate,
